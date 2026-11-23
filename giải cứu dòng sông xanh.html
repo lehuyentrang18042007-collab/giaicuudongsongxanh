@@ -1,0 +1,2599 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giải cứu Dòng Sông Xanh - Khoa học lớp 4</title>
+
+  <style>
+    /* =========================================================================
+       1. PHÔNG CHỮ ARIAL 12PT & BẢNG MÀU SÁCH GIÁO KHOA TIỂU HỌC
+       ========================================================================= */
+    :root {
+      --board-green: #1c5f3b;
+      --board-deep: #13452a;
+      --wood-outer: #7c3f14;
+      --wood-inner: #a85b22;
+      --wood-shadow: #4a2308;
+      --sky-top: #bce7ff;
+      --sky-mid: #eaf8ff;
+      --meadow-bottom: #d8f3cc;
+      --paper-bg: #fffdf6;
+      --ink-dark: #1e293b;
+      --ink-muted: #475569;
+      --river-deep: #0369a1;
+      --river-bright: #38bdf8;
+      --leaf-green: #15803d;
+      --coral-warm: #c2410c;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12pt;
+      line-height: 1.55;
+      color: var(--ink-dark);
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background:
+        radial-gradient(circle at 12% 7%, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0) 19%),
+        radial-gradient(circle at 86% 9%, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0) 17%),
+        linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 44%, var(--meadow-bottom) 100%);
+    }
+
+    h1, h2, h3, h4, p, li, div, span, label, input, textarea, select, button, td, th, a {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    p, li, div, span, label, input, textarea, select, button, td, th, a {
+      font-size: 12pt;
+    }
+
+    h1 { font-size: 16.5pt; font-weight: 700; margin: 0; line-height: 1.28; }
+    h2 { font-size: 15pt; font-weight: 700; margin: 0 0 10px 0; line-height: 1.32; }
+    h3 { font-size: 14pt; font-weight: 700; margin: 0 0 8px 0; line-height: 1.35; }
+
+    /* =========================================================================
+       2. THANH TIÊU ĐỀ BIỂN GỖ CÔNG VIÊN / BẢNG XANH VIỀN GỖ (KHÔNG NÚT BẤM)
+       ========================================================================= */
+    .park-header {
+      padding: 14px 16px 6px;
+      position: relative;
+      z-index: 60;
+    }
+
+    .wood-sign {
+      max-width: 1040px;
+      margin: 0 auto;
+      position: relative;
+      background-color: var(--board-green);
+      background-image:
+        radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(180deg, #237448 0%, var(--board-green) 58%, var(--board-deep) 100%);
+      background-size: 16px 16px, 100% 100%;
+      border: 8px solid var(--wood-outer);
+      border-radius: 14px;
+      box-shadow:
+        inset 0 0 0 3px var(--wood-inner),
+        0 5px 0 var(--wood-shadow),
+        0 10px 22px rgba(45, 22, 6, 0.24);
+      padding: 14px 24px;
+    }
+
+    .wood-rivet {
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fef08a, #d97706 70%, #78350f);
+      border: 1px solid #451a03;
+      pointer-events: none;
+    }
+
+    .rivet-tl { top: 8px; left: 8px; }
+    .rivet-tr { top: 8px; right: 8px; }
+    .rivet-bl { bottom: 8px; left: 8px; }
+    .rivet-br { bottom: 8px; right: 8px; }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      text-align: left;
+    }
+
+    .emblem-drop {
+      width: 60px;
+      height: 60px;
+      background: #e0f2fe;
+      border: 3px solid #fbbf24;
+      border-radius: 12px;
+      box-shadow: 0 3px 0 #78350f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .header-texts {
+      flex: 1 1 320px;
+      min-width: 0;
+    }
+
+    .game-title {
+      color: #fef08a;
+      font-size: 17pt;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-shadow: 1px 2px 0 rgba(0, 0, 0, 0.38);
+      margin: 0;
+    }
+
+    .game-subtitle {
+      color: #ffffff;
+      margin: 4px 0 0 0;
+      font-weight: 400;
+    }
+
+    /* =========================================================================
+       3. HỆ THỐNG NÚT BẤM TRÒ CHƠI RÕ NÉT, DỄ CHẠM
+       ========================================================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      font-size: 12pt;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s ease, filter 0.15s ease;
+    }
+
+    .btn:hover:not(:disabled) { filter: brightness(1.06); transform: translateY(-1px); }
+    .btn:active:not(:disabled) { transform: translateY(2px); }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-sm { padding: 6px 11px; border-radius: 8px; }
+
+    .btn-green {
+      background: linear-gradient(180deg, #22c55e 0%, #15803d 100%);
+      color: #ffffff;
+      border-color: #14532d;
+      box-shadow: 0 3px 0 #14532d;
+    }
+
+    .btn-blue {
+      background: linear-gradient(180deg, #0ea5e9 0%, #0369a1 100%);
+      color: #ffffff;
+      border-color: #0c4a6e;
+      box-shadow: 0 3px 0 #0c4a6e;
+    }
+
+    .btn-amber {
+      background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+      color: #451a03;
+      border-color: #92400e;
+      box-shadow: 0 3px 0 #78350f;
+    }
+
+    .btn-red {
+      background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
+      color: #ffffff;
+      border-color: #7f1d1d;
+      box-shadow: 0 3px 0 #7f1d1d;
+    }
+
+    .btn-cream {
+      background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+      color: #1e293b;
+      border-color: #64748b;
+      box-shadow: 0 3px 0 #475569;
+    }
+
+    /* =========================================================================
+       4. BẢN ĐỒ HÀNH TRÌNH DÒNG SÔNG UỐN LƯỢN (6 TRẠM ĐÁ & THUYỀN BUỒM)
+       ========================================================================= */
+    .main-wrap {
+      flex: 1;
+      width: 100%;
+      max-width: 1040px;
+      margin: 14px auto 24px;
+      padding: 0 16px;
+    }
+
+    .river-map {
+      background: linear-gradient(180deg, #dcfce7 0%, #bbf7d0 26%, #bae6fd 26%, #7dd3fc 76%, #bbf7d0 76%, #dcfce7 100%);
+      border: 4px solid #15803d;
+      border-radius: 12px;
+      padding: 12px 16px 14px;
+      margin-bottom: 22px;
+      box-shadow: 0 5px 0 rgba(21, 128, 61, 0.26);
+    }
+
+    .river-map-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 2px solid #15803d;
+      border-radius: 8px;
+      padding: 6px 12px;
+      margin-bottom: 10px;
+    }
+
+    .key-counter {
+      background: #fef3c7;
+      border: 2px solid #d97706;
+      border-radius: 8px;
+      padding: 3px 10px;
+      color: #7c2d12;
+      font-weight: 700;
+    }
+
+    .river-track {
+      position: relative;
+      padding-top: 32px;
+    }
+
+    .river-curve-svg {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      top: 42px;
+      width: calc(100% - 48px);
+      height: 38px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .stones-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+
+    .stone-station {
+      position: relative;
+      background: transparent;
+      border: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: not-allowed;
+      color: #334155;
+    }
+
+    .stone-station.clickable { cursor: pointer; }
+
+    .boat-marker {
+      position: absolute;
+      top: -34px;
+      font-size: 26px;
+      line-height: 1;
+      display: none;
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
+      animation: boatFloat 1.5s ease-in-out infinite;
+    }
+
+    .stone-station.active .boat-marker { display: block; }
+
+    @keyframes boatFloat {
+      0%, 100% { transform: translateY(0) rotate(-4deg); }
+      50% { transform: translateY(-4px) rotate(4deg); }
+    }
+
+    .stone-disc {
+      width: 60px;
+      height: 44px;
+      border-radius: 18px 16px 20px 14px;
+      background: linear-gradient(180deg, #f1f5f9 0%, #cbd5e1 100%);
+      border: 3px solid #64748b;
+      box-shadow: 0 4px 0 #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .stone-station.active .stone-disc {
+      background: linear-gradient(180deg, #fef08a 0%, #f59e0b 100%);
+      border-color: #92400e;
+      box-shadow: 0 4px 0 #78350f;
+      color: #451a03;
+    }
+
+    .stone-station.done .stone-disc {
+      background: linear-gradient(180deg, #86efac 0%, #16a34a 100%);
+      border-color: #14532d;
+      box-shadow: 0 4px 0 #14532d;
+      color: #ffffff;
+    }
+
+    .stone-name {
+      background: #ffffff;
+      border: 2px solid #94a3b8;
+      border-radius: 6px;
+      padding: 4px 6px;
+      width: 100%;
+      text-align: center;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .stone-station.active .stone-name {
+      background: #fef3c7;
+      border-color: #b45309;
+      color: #7c2d12;
+    }
+
+    .stone-station.done .stone-name {
+      background: #dcfce7;
+      border-color: #15803d;
+      color: #14532d;
+    }
+
+    /* =========================================================================
+       5. TRANG VỞ HỌC SINH DÁN BĂNG KEO MÀU, DẢI RUY-BĂNG & KHUNG TRANH
+       ========================================================================= */
+    .screen { display: none; }
+    .screen.active { display: block; animation: pageReveal 0.24s ease; }
+
+    @keyframes pageReveal {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .notebook-sheet {
+      position: relative;
+      background-color: var(--paper-bg);
+      background-image: linear-gradient(to bottom, transparent 31px, rgba(148, 163, 184, 0.16) 32px);
+      background-size: 100% 32px;
+      border: 3.5px solid #b45309;
+      border-left: 12px solid #92400e;
+      border-radius: 10px;
+      padding: 24px 22px 22px;
+      box-shadow: 0 7px 0 rgba(146, 64, 14, 0.2), 0 12px 24px rgba(15, 23, 42, 0.08);
+      margin-bottom: 18px;
+    }
+
+    .tape-strip {
+      position: absolute;
+      width: 72px;
+      height: 22px;
+      top: -10px;
+      opacity: 0.92;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .tape-l {
+      left: 24px;
+      background: repeating-linear-gradient(45deg, #fde047, #fde047 8px, #facc15 8px, #facc15 16px);
+      transform: rotate(-11deg);
+      border: 1px solid #ca8a04;
+    }
+
+    .tape-r {
+      right: 24px;
+      background: repeating-linear-gradient(-45deg, #7dd3fc, #7dd3fc 8px, #38bdf8 8px, #38bdf8 16px);
+      transform: rotate(10deg);
+      border: 1px solid #0284c7;
+    }
+
+    .ribbon-banner {
+      display: inline-block;
+      color: #ffffff;
+      padding: 8px 34px 8px 16px;
+      font-size: 14pt;
+      font-weight: 700;
+      border-radius: 4px 0 0 4px;
+      clip-path: polygon(0 0, 100% 0, 95.5% 50%, 100% 100%, 0 100%);
+      margin-bottom: 12px;
+      max-width: 100%;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    }
+
+    .rb-orange { background: linear-gradient(90deg, #c2410c 0%, #f97316 100%); }
+    .rb-teal   { background: linear-gradient(90deg, #0f766e 0%, #14b8a6 100%); }
+    .rb-blue   { background: linear-gradient(90deg, #0369a1 0%, #0ea5e9 100%); }
+    .rb-green  { background: linear-gradient(90deg, #15803d 0%, #22c55e 100%); }
+
+    .sheet-title {
+      font-size: 15.5pt;
+      font-weight: 700;
+      color: #7c2d12;
+      margin: 2px 0 10px 0;
+    }
+
+    .story-callout {
+      background: #fef9c3;
+      border: 2px solid #ca8a04;
+      border-left: 7px solid #ca8a04;
+      border-radius: 8px;
+      padding: 11px 14px;
+      margin-bottom: 16px;
+      color: #422006;
+    }
+
+    .art-frame {
+      position: relative;
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 4px solid #0284c7;
+      background: #e0f2fe;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 0 rgba(2, 132, 199, 0.22);
+    }
+
+    .art-frame svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .field-label {
+      display: block;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #64748b;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 12pt;
+      outline: none;
+    }
+
+    .text-input:focus {
+      border-color: #0284c7;
+      background: #f0f9ff;
+    }
+
+    .sheet-footer {
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 2px dashed #94a3b8;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .alert-box {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      border: 2px solid transparent;
+    }
+
+    .alert-box.show { display: block; }
+    .alert-err { background: #fee2e2; color: #991b1b; border-color: #dc2626; }
+    .alert-ok  { background: #dcfce7; color: #166534; border-color: #16a34a; }
+
+    /* =========================================================================
+       6. CHẶNG 1: BẢNG GHIM GỖ LỚP HỌC & GIẤY NHỚ 4 MÀU
+       ========================================================================= */
+    .suggest-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
+
+    .suggest-chip {
+      background: #fef3c7;
+      border: 2px solid #b45309;
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-weight: 700;
+      color: #78350f;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #92400e;
+    }
+
+    .suggest-chip:hover { background: #fde68a; }
+
+    .corkboard {
+      min-height: 200px;
+      background-color: #c88e56;
+      background-image: radial-gradient(rgba(92, 45, 12, 0.22) 1.5px, transparent 1.5px);
+      background-size: 16px 16px;
+      border: 10px solid #78350f;
+      border-radius: 10px;
+      padding: 18px;
+      box-shadow: inset 0 4px 12px rgba(69, 26, 3, 0.4), 0 5px 0 #451a03;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .sticky-card {
+      position: relative;
+      width: 214px;
+      min-height: 94px;
+      padding: 24px 14px 12px;
+      border-radius: 3px;
+      box-shadow: 3px 5px 10px rgba(45, 22, 6, 0.3);
+      font-weight: 700;
+      color: #1e293b;
+      word-break: break-word;
+    }
+
+    .sticky-card:nth-child(4n+1) { background: #fef08a; border-bottom: 3px solid #eab308; transform: rotate(-1.6deg); }
+    .sticky-card:nth-child(4n+2) { background: #fbcfe8; border-bottom: 3px solid #ec4899; transform: rotate(1.4deg); }
+    .sticky-card:nth-child(4n+3) { background: #99f6e4; border-bottom: 3px solid #14b8a6; transform: rotate(-1.2deg); }
+    .sticky-card:nth-child(4n+4) { background: #fed7aa; border-bottom: 3px solid #f97316; transform: rotate(1.6deg); }
+
+    .push-pin {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fca5a5, #dc2626 68%, #7f1d1d);
+    }
+
+    .sticky-del {
+      position: absolute;
+      top: 4px;
+      right: 5px;
+      width: 24px;
+      height: 24px;
+      border: 1.5px solid #dc2626;
+      border-radius: 4px;
+      background: #ffffff;
+      color: #b91c1c;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    /* =========================================================================
+       7. CHẶNG 2: ĐƯA TRANH VỀ ĐÚNG NGÔI NHÀ & MỞ HỘP KHÓA TRI THỨC
+       ========================================================================= */
+    .challenge-heading {
+      background: #e0f2fe;
+      border: 2px solid #0284c7;
+      border-left: 7px solid #0369a1;
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-size: 13.5pt;
+      font-weight: 700;
+      color: #0c4a6e;
+      margin: 18px 0 12px;
+    }
+
+    .cards-tray {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      background: #f0f9ff;
+      border: 2px dashed #0284c7;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 18px;
+    }
+
+    .pic-card {
+      background: #ffffff;
+      border: 3px solid #d97706;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      box-shadow: 0 4px 0 rgba(180, 83, 9, 0.22);
+    }
+
+    .pic-card-art {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid #bae6fd;
+      background: #f8fafc;
+    }
+
+    .pic-card-art svg {
+      display: block;
+      width: 100%;
+      height: 112px;
+    }
+
+    .pic-card-caption {
+      font-weight: 700;
+      text-align: center;
+      color: #0f172a;
+    }
+
+    .pic-card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .house-pick-btn {
+      padding: 7px 5px;
+      border-radius: 6px;
+      border: 2px solid transparent;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .pick-dirty { background: #ffedd5; color: #9a3412; border-color: #ea580c; }
+    .pick-dirty:hover { background: #ea580c; color: #ffffff; }
+    .pick-clean { background: #dcfce7; color: #166534; border-color: #16a34a; }
+    .pick-clean:hover { background: #16a34a; color: #ffffff; }
+
+    .house-box {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 0 rgba(15, 23, 42, 0.12);
+    }
+
+    .house-roof {
+      padding: 10px 14px;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: center;
+      font-size: 13pt;
+    }
+
+    .house-dirty { border: 3px solid #ea580c; background: #fff7ed; }
+    .house-dirty .house-roof { background: linear-gradient(180deg, #f97316 0%, #c2410c 100%); }
+
+    .house-clean { border: 3px solid #16a34a; background: #f0fdf4; }
+    .house-clean .house-roof { background: linear-gradient(180deg, #22c55e 0%, #15803d 100%); }
+
+    .house-body {
+      padding: 12px;
+      min-height: 150px;
+    }
+
+    .housed-item {
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .housed-item.ok  { border-left: 7px solid #16a34a; background: #f0fdf4; }
+    .housed-item.err { border-left: 7px solid #dc2626; background: #fef2f2; }
+
+    .quiz-card {
+      background: #ffffff;
+      border: 2.5px solid #0284c7;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .quiz-top-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .quiz-mini-art {
+      width: 78px;
+      height: 78px;
+      border-radius: 10px;
+      border: 2px solid #7dd3fc;
+      background: #f0f9ff;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .quiz-mini-art svg { display: block; width: 100%; height: 100%; }
+
+    .quiz-options-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .quiz-choice {
+      width: 100%;
+      text-align: left;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 2px solid #94a3b8;
+      background: #f8fafc;
+      color: #0f172a;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .quiz-choice:hover { background: #e0f2fe; border-color: #0284c7; }
+    .quiz-choice.selected { background: #bae6fd; border-color: #0369a1; color: #0c4a6e; }
+    .quiz-choice.correct  { background: #dcfce7; border-color: #16a34a; color: #14532d; }
+    .quiz-choice.wrong    { background: #fee2e2; border-color: #dc2626; color: #7f1d1d; }
+
+    /* =========================================================================
+       8. CHẶNG 3: EM LÀ NGƯỜI HÙNG BẢO VỆ DÒNG NƯỚC
+       ========================================================================= */
+    .story-card {
+      background: #fffbeb;
+      border: 3px solid #d97706;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 0 rgba(180, 83, 9, 0.2);
+    }
+
+    .story-card-title {
+      font-size: 13.5pt;
+      font-weight: 700;
+      color: #7c2d12;
+      margin-bottom: 10px;
+    }
+
+    .hero-choice {
+      width: 100%;
+      text-align: left;
+      padding: 11px 14px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 2px solid #94a3b8;
+      background: #ffffff;
+      color: #0f172a;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .hero-choice:hover { border-color: #0284c7; background: #f0f9ff; }
+    .hero-choice.active { border-color: #0369a1; background: #bae6fd; color: #0c4a6e; }
+
+    .next-happen-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 2.5px solid;
+    }
+
+    .next-happen-box.show { display: block; }
+    .outcome-good { background: #dcfce7; border-color: #15803d; color: #14532d; }
+    .outcome-warn { background: #fef3c7; border-color: #d97706; color: #78350f; }
+    .outcome-bad  { background: #fee2e2; border-color: #dc2626; color: #7f1d1d; }
+
+    /* =========================================================================
+       9. CHẶNG 4: BỨC TRANH CAM KẾT A3 (4 GÓC CÁ NHÂN & Ô TRUNG TÂM TRÁI ĐẤT)
+       ========================================================================= */
+    .wooden-table {
+      background: linear-gradient(180deg, #b45309 0%, #8b4513 100%);
+      border: 4px solid #5c2d0c;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 5px 0 #451a03;
+    }
+
+    .a3-poster {
+      background: #ffffff;
+      border: 3px solid #15803d;
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .a3-poster-title {
+      text-align: center;
+      font-size: 13.5pt;
+      font-weight: 700;
+      color: #14532d;
+      background: #dcfce7;
+      border: 2px dashed #16a34a;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 14px;
+    }
+
+    .poster-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .corner-box {
+      border-radius: 10px;
+      padding: 12px;
+      border: 3px solid;
+    }
+
+    .c-blue   { background: #f0f9ff; border-color: #0284c7; }
+    .c-amber  { background: #fffbeb; border-color: #d97706; }
+    .c-pink   { background: #fdf2f8; border-color: #db2777; }
+    .c-purple { background: #f5f3ff; border-color: #7c3aed; }
+
+    .corner-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .student-avatar {
+      width: 62px;
+      height: 62px;
+      border-radius: 10px;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #ffffff;
+    }
+
+    .center-promise {
+      grid-column: 1 / -1;
+      background: linear-gradient(180deg, #ecfdf5 0%, #dcfce7 100%);
+      border: 5px solid #15803d;
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(21, 128, 61, 0.14);
+    }
+
+    .center-flex {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .earth-box {
+      width: 148px;
+      height: 148px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 3px solid #16a34a;
+      background: #e0f2fe;
+      flex-shrink: 0;
+    }
+
+    .earth-box svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* =========================================================================
+       10. MÀN HÌNH 5: VỀ ĐÍCH – CHIẾN THẮNG & PHIẾU GHI NHẬN HÀNH TRÌNH
+       ========================================================================= */
+    .victory-banner {
+      background: linear-gradient(180deg, #fef9c3 0%, #dcfce7 100%);
+      border: 4px solid #15803d;
+      border-radius: 10px;
+      padding: 18px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .award-medal {
+      display: inline-block;
+      background: linear-gradient(180deg, #fde047 0%, #f59e0b 100%);
+      color: #451a03;
+      border: 3px solid #92400e;
+      border-radius: 10px;
+      padding: 7px 18px;
+      font-size: 13.5pt;
+      font-weight: 700;
+      margin: 8px 0 4px;
+      box-shadow: 0 3px 0 #78350f;
+    }
+
+    .export-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .result-sheet {
+      background: #ffffff;
+      border: 2px solid #0f172a;
+      border-radius: 6px;
+      padding: 20px;
+      color: #000000;
+    }
+
+    .result-sheet h3 {
+      text-align: center;
+      font-size: 14pt;
+      text-transform: uppercase;
+      color: #0c4a6e;
+      margin-bottom: 4px;
+    }
+
+    .res-section {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed #64748b;
+    }
+
+    .res-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    .res-table th,
+    .res-table td {
+      border: 1px solid #334155;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .res-table th { background: #f1f5f9; }
+
+    /* =========================================================================
+       11. CHÂN TRANG KÍN ĐÁO (DUY NHẤT 1 LIÊN KẾT MỜ) & HỘP THOẠI XÁC NHẬN
+       ========================================================================= */
+    .subtle-footer {
+      max-width: 1040px;
+      width: 100%;
+      margin: 0 auto 18px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .subtle-link {
+      background: transparent;
+      border: none;
+      padding: 4px 6px;
+      color: #64748b;
+      opacity: 0.68;
+      font-size: 10.5pt;
+      font-weight: 400;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .subtle-link:hover {
+      opacity: 1;
+      color: #0369a1;
+    }
+
+    .subtle-link.on {
+      opacity: 1;
+      color: #15803d;
+      font-weight: 700;
+    }
+
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.58);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      z-index: 160;
+    }
+
+    .modal-mask.open { display: flex; }
+
+    .confirm-dialog {
+      background: #ffffff;
+      border: 4px solid var(--wood-outer);
+      border-radius: 12px;
+      max-width: 450px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.34);
+    }
+
+    .confirm-head {
+      background: var(--board-green);
+      color: #fef08a;
+      border-bottom: 4px solid var(--wood-outer);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .confirm-head h3 { margin: 0; color: #fef08a; }
+
+    .confirm-body {
+      padding: 18px 16px;
+      text-align: center;
+    }
+
+    .confirm-foot {
+      background: #f8fafc;
+      border-top: 2px solid #cbd5e1;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #14532d;
+      color: #ffffff;
+      border: 2px solid #4ade80;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      z-index: 250;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+    }
+
+    .toast.show { display: block; }
+
+    /* =========================================================================
+       12. RESPONSIVE & CHẾ ĐỘ IN KHỔ A4 (CHUẨN ARIAL 12PT)
+       ========================================================================= */
+    @media (max-width: 860px) {
+      .stones-grid { grid-template-columns: repeat(3, 1fr); row-gap: 34px; }
+      .river-curve-svg { display: none; }
+      .cards-tray { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .grid-2, .poster-grid, .cards-tray { grid-template-columns: 1fr; }
+      .sticky-card { width: 100%; }
+      .notebook-sheet { padding: 18px 12px; }
+      .header-content { text-align: center; }
+      .quiz-top-row { flex-direction: column; align-items: center; text-align: center; }
+      .center-flex { flex-direction: column; align-items: stretch; }
+      .earth-box { margin: 0 auto; }
+      .subtle-footer { justify-content: center; }
+    }
+
+    @media print {
+      @page { size: A4 portrait; margin: 12mm; }
+      body { background: #ffffff !important; font-family: Arial, Helvetica, sans-serif !important; font-size: 12pt !important; }
+      .park-header, .river-map, .no-print, .subtle-footer, .modal-mask, .toast, .tape-strip { display: none !important; }
+      .main-wrap { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+      .screen { display: none !important; }
+      #screen-5 { display: block !important; }
+      .notebook-sheet { border: none !important; box-shadow: none !important; background: #ffffff !important; padding: 0 !important; }
+      .result-sheet { border: 1.5px solid #000000 !important; padding: 14px !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       THANH TIÊU ĐỀ BIỂN GỖ CÔNG VIÊN (HOÀN TOÀN KHÔNG CÓ NÚT BẤM)
+       ========================================================================= -->
+  <header class="park-header no-print">
+    <div class="wood-sign">
+      <span class="wood-rivet rivet-tl" aria-hidden="true"></span>
+      <span class="wood-rivet rivet-tr" aria-hidden="true"></span>
+      <span class="wood-rivet rivet-bl" aria-hidden="true"></span>
+      <span class="wood-rivet rivet-br" aria-hidden="true"></span>
+      <div class="header-content">
+        <div class="emblem-drop" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="46" height="46">
+            <path d="M32 6 C32 6 12 28 12 42 C12 53 21 60 32 60 C43 60 52 53 52 42 C52 28 32 6 32 6 Z" fill="#38bdf8" stroke="#0369a1" stroke-width="3"/>
+            <path d="M22 30 Q18 38 20 45" fill="none" stroke="#e0f2fe" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="24" cy="40" r="3.2" fill="#0f172a"/>
+            <circle cx="40" cy="40" r="3.2" fill="#0f172a"/>
+            <circle cx="25" cy="39" r="1" fill="#ffffff"/>
+            <circle cx="41" cy="39" r="1" fill="#ffffff"/>
+            <circle cx="19" cy="45" r="3.2" fill="#fda4af" opacity="0.75"/>
+            <circle cx="45" cy="45" r="3.2" fill="#fda4af" opacity="0.75"/>
+            <path d="M26 47 Q32 53 38 47" fill="none" stroke="#0f172a" stroke-width="2.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="header-texts">
+          <h1 class="game-title">GIẢI CỨU DÒNG SÔNG XANH</h1>
+          <p class="game-subtitle">Khoa học lớp 4 – Bài 3: Ô nhiễm và bảo vệ nguồn nước (Chương trình GDPT 2018)</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       KHUNG NỘI DUNG CHÍNH
+       ========================================================================= -->
+  <main class="main-wrap">
+    <!-- BẢN ĐỒ HÀNH TRÌNH DÒNG SÔNG 6 TRẠM -->
+    <nav class="river-map no-print" aria-label="Bản đồ hành trình Dòng Sông Xanh">
+      <div class="river-map-head">
+        <strong style="color:#14532d;">BẢN ĐỒ HÀNH TRÌNH GIẢI CỨU DÒNG SÔNG XANH</strong>
+        <span class="key-counter" id="key-counter">🔑 Chìa khóa đã tìm: 0 / 4</span>
+      </div>
+      <div class="river-track">
+        <svg class="river-curve-svg" viewBox="0 0 900 38" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 19 Q75 4 150 19 T300 19 T450 19 T600 19 T750 19 T900 19" fill="none" stroke="#0369a1" stroke-width="14" stroke-linecap="round"/>
+          <path d="M0 19 Q75 4 150 19 T300 19 T450 19 T600 19 T750 19 T900 19" fill="none" stroke="#38bdf8" stroke-width="8" stroke-dasharray="16 10" stroke-linecap="round"/>
+        </svg>
+        <div class="stones-grid" id="stones-grid"></div>
+      </div>
+    </nav>
+
+    <!-- 6 MÀN HÌNH TƯƠNG TÁC -->
+    <section class="screen active" id="screen-0"></section>
+    <section class="screen" id="screen-1"></section>
+    <section class="screen" id="screen-2"></section>
+    <section class="screen" id="screen-3"></section>
+    <section class="screen" id="screen-4"></section>
+    <section class="screen" id="screen-5"></section>
+  </main>
+
+  <!-- =========================================================================
+       CHÂN TRANG KÍN ĐÁO (CHỈ GIỮ DUY NHẤT 1 LIÊN KẾT "XEM NHANH CÁC CHẶNG")
+       ========================================================================= -->
+  <footer class="subtle-footer no-print">
+    <button type="button" class="subtle-link" id="quick-view-link" onclick="toggleQuickView()">Xem nhanh các chặng</button>
+  </footer>
+
+  <!-- HỘP THOẠI XÁC NHẬN CHƠI LẠI TỪ ĐẦU (KHÔNG DÙNG ALERT/CONFIRM) -->
+  <div class="modal-mask no-print" id="modal-confirm" onclick="if(event.target===this) closeConfirm()">
+    <div class="confirm-dialog">
+      <div class="confirm-head">
+        <h3 id="confirm-title">Xác nhận</h3>
+        <button type="button" class="btn btn-sm btn-cream" onclick="closeConfirm()">✖</button>
+      </div>
+      <div class="confirm-body">
+        <p id="confirm-text" style="margin:6px 0;"></p>
+      </div>
+      <div class="confirm-foot">
+        <button type="button" class="btn btn-cream" onclick="closeConfirm()">Hủy</button>
+        <button type="button" class="btn btn-red" id="confirm-yes">Đồng ý</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- THÔNG BÁO NHANH -->
+  <div class="toast no-print" id="toast"></div>
+
+  <!-- =========================================================================
+       JAVASCRIPT: TRANH SVG HỌC SINH TIỂU HỌC VN, LOGIC 6 MÀN HÌNH & XUẤT BÀI
+       ========================================================================= -->
+  <script>
+    /* -------------------------------------------------------------------------
+       1. HÀM VẼ HỌC SINH TIỂU HỌC VIỆT NAM (ÁO SƠ MI TRẮNG, KHĂN QUÀNG ĐỎ)
+       ------------------------------------------------------------------------- */
+    function drawStudent(x, y, opts) {
+      const o = Object.assign({
+        scale: 1,
+        girl: false,
+        glasses: false,
+        armsUp: false,
+        raiseRight: false,
+        pointRight: false,
+        stopLeft: false,
+        holdingMagnifier: false,
+        holdingTrophy: false,
+        hairClip: "#ef4444",
+        mood: "happy"
+      }, opts || {});
+
+      const mouth = o.mood === "worried"
+        ? `<path d="M-5 5 Q0 1 5 5" fill="none" stroke="#7c2d12" stroke-width="2" stroke-linecap="round"/>`
+        : o.mood === "surprised"
+        ? `<ellipse cx="0" cy="4" rx="3.4" ry="4.4" fill="#991b1b"/>`
+        : `<path d="M-6 2 Q0 8 6 2" fill="none" stroke="#7c2d12" stroke-width="2.2" stroke-linecap="round"/>`;
+
+      const hair = o.girl
+        ? `<circle cx="-17" cy="-5" r="7.5" fill="#1e293b"/>
+           <circle cx="17" cy="-5" r="7.5" fill="#1e293b"/>
+           <circle cx="-13" cy="-9" r="3" fill="${o.hairClip}"/>
+           <circle cx="13" cy="-9" r="3" fill="${o.hairClip}"/>
+           <path d="M-15 -6 C-16 -22 16 -22 15 -6 C9 -12 -9 -12 -15 -6 Z" fill="#1e293b"/>`
+        : `<path d="M-15 -6 C-16 -22 16 -22 15 -6 C10 -12 4 -13 0 -10 C-4 -13 -10 -12 -15 -6 Z" fill="#1e293b"/>`;
+
+      const glasses = o.glasses
+        ? `<circle cx="-5.5" cy="-3" r="4.5" fill="none" stroke="#0f172a" stroke-width="1.6"/>
+           <circle cx="5.5" cy="-3" r="4.5" fill="none" stroke="#0f172a" stroke-width="1.6"/>
+           <line x1="-1" y1="-3" x2="1" y2="-3" stroke="#0f172a" stroke-width="1.6"/>`
+        : "";
+
+      const lower = o.girl
+        ? `<polygon points="-14,35 14,35 19,53 -19,53" fill="#1e3a8a" stroke="#172554" stroke-width="1.8"/>`
+        : `<rect x="-13" y="35" width="11" height="19" rx="3" fill="#1e3a8a" stroke="#172554" stroke-width="1.8"/>
+           <rect x="2" y="35" width="11" height="19" rx="3" fill="#1e3a8a" stroke="#172554" stroke-width="1.8"/>`;
+
+      const leftArm = o.armsUp
+        ? `<path d="M-13 18 L-26 -3" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+           <circle cx="-27" cy="-5" r="4.4" fill="#fde0c0" stroke="#b45309" stroke-width="1.2"/>`
+        : o.stopLeft
+        ? `<path d="M-13 18 L-30 14" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+           <circle cx="-32" cy="14" r="4.6" fill="#fde0c0" stroke="#b45309" stroke-width="1.2"/>`
+        : `<path d="M-13 18 L-23 32" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+           <circle cx="-24" cy="33" r="4.2" fill="#fde0c0" stroke="#b45309" stroke-width="1.2"/>`;
+
+      const rightArm = (o.armsUp || o.raiseRight)
+        ? `<path d="M13 18 L26 -4" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+           <circle cx="27" cy="-6" r="4.4" fill="#fde0c0" stroke="#b45309" stroke-width="1.2"/>`
+        : (o.pointRight || o.holdingMagnifier)
+        ? `<path d="M13 18 L30 14" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+           <circle cx="32" cy="14" r="4.4" fill="#fde0c0" stroke="#b45309" stroke-width="1.2"/>`
+        : `<path d="M13 18 L23 32" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+           <circle cx="24" cy="33" r="4.2" fill="#fde0c0" stroke="#b45309" stroke-width="1.2"/>`;
+
+      const magnifier = o.holdingMagnifier
+        ? `<g transform="translate(36, 12)">
+             <line x1="0" y1="0" x2="10" y2="-10" stroke="#78350f" stroke-width="4" stroke-linecap="round"/>
+             <circle cx="17" cy="-17" r="10" fill="#e0f2fe" fill-opacity="0.72" stroke="#0369a1" stroke-width="3"/>
+           </g>`
+        : "";
+
+      const trophy = o.holdingTrophy
+        ? `<g transform="translate(27,-22)">
+             <path d="M-11 -6 H11 L7 8 Q0 13 -7 8 Z" fill="#facc15" stroke="#b45309" stroke-width="2"/>
+             <rect x="-2.5" y="11" width="5" height="6" fill="#d97706"/>
+             <rect x="-8" y="16" width="16" height="4" rx="1" fill="#92400e"/>
+           </g>`
+        : "";
+
+      return `
+        <g transform="translate(${x}, ${y}) scale(${o.scale})">
+          <rect x="-10" y="51" width="6" height="13" rx="2" fill="#fde0c0"/>
+          <rect x="4" y="51" width="6" height="13" rx="2" fill="#fde0c0"/>
+          <ellipse cx="-8" cy="65" rx="6.5" ry="3.5" fill="#334155"/>
+          <ellipse cx="8" cy="65" rx="6.5" ry="3.5" fill="#334155"/>
+          ${leftArm}
+          ${rightArm}
+          ${lower}
+          <rect x="-14" y="13" width="28" height="24" rx="5" fill="#ffffff" stroke="#64748b" stroke-width="1.8"/>
+          <polygon points="-13,14 13,14 0,27" fill="#dc2626" stroke="#991b1b" stroke-width="1.4"/>
+          <path d="M-2 23 L-6 33 L-1 31 Z" fill="#dc2626"/>
+          <path d="M2 23 L6 33 L1 31 Z" fill="#dc2626"/>
+          <circle cx="0" cy="21" r="2.8" fill="#991b1b"/>
+          <circle cx="0" cy="-2" r="15" fill="#fde0c0" stroke="#b45309" stroke-width="1.8"/>
+          ${hair}
+          <circle cx="-5.5" cy="-3" r="2.2" fill="#0f172a"/>
+          <circle cx="5.5" cy="-3" r="2.2" fill="#0f172a"/>
+          <circle cx="-4.8" cy="-3.8" r="0.8" fill="#ffffff"/>
+          <circle cx="6.2" cy="-3.8" r="0.8" fill="#ffffff"/>
+          <circle cx="-9.5" cy="1.5" r="2.6" fill="#fca5a5" opacity="0.72"/>
+          <circle cx="9.5" cy="1.5" r="2.6" fill="#fca5a5" opacity="0.72"/>
+          ${glasses}
+          ${mouth}
+          ${magnifier}
+          ${trophy}
+        </g>
+      `;
+    }
+
+    function drawPortrait(opts) {
+      const o = Object.assign({ bg: "#e0f2fe", girl: false, glasses: false, hairClip: "#ef4444" }, opts);
+      return `<svg viewBox="0 0 72 72" width="62" height="62" xmlns="http://www.w3.org/2000/svg">
+        <rect width="72" height="72" fill="${o.bg}"/>
+        ${drawStudent(36, 36, { scale: 1.22, girl: o.girl, glasses: o.glasses, hairClip: o.hairClip })}
+      </svg>`;
+    }
+
+    /* -------------------------------------------------------------------------
+       2. HỆ THỐNG TRANH MINH HỌA SVG CHO CẢ 6 MÀN HÌNH, 6 THẺ & 3 CÂU HỎI
+       ------------------------------------------------------------------------- */
+    const SCENES = {
+      // Màn 0: 4 học sinh tiểu học bên bờ sông ô nhiễm + nhà máy + cá buồn + biển gỗ
+      cover: () => `
+        <svg viewBox="0 0 900 285" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="4 học sinh tiểu học đeo khăn quàng đỏ đứng bên bờ sông đang bị ô nhiễm cùng biển gỗ Cứu Sông Xanh">
+          <defs>
+            <linearGradient id="cSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#fef9c3"/></linearGradient>
+            <linearGradient id="cRiv" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#94a3b8"/><stop offset="50%" stop-color="#78716c"/><stop offset="100%" stop-color="#64748b"/></linearGradient>
+          </defs>
+          <rect width="900" height="285" fill="url(#cSky)"/>
+          <circle cx="72" cy="50" r="24" fill="#fde047" stroke="#f59e0b" stroke-width="3"/>
+          <g fill="#ffffff" opacity="0.9">
+            <circle cx="195" cy="40" r="16"/><circle cx="215" cy="34" r="20"/><circle cx="235" cy="40" r="14"/>
+            <circle cx="620" cy="42" r="16"/><circle cx="640" cy="36" r="20"/><circle cx="662" cy="44" r="15"/>
+          </g>
+          <path d="M0 175 Q220 112 490 162 T900 152 L900 285 L0 285 Z" fill="#86efac"/>
+          <!-- Nhà máy xa xa xả khói -->
+          <rect x="756" y="88" width="108" height="74" rx="5" fill="#cbd5e1" stroke="#475569" stroke-width="3"/>
+          <rect x="776" y="50" width="18" height="38" fill="#94a3b8" stroke="#475569" stroke-width="2.5"/>
+          <rect x="814" y="60" width="16" height="28" fill="#94a3b8" stroke="#475569" stroke-width="2.5"/>
+          <circle cx="790" cy="34" r="11" fill="#94a3b8" opacity="0.72"/>
+          <circle cx="808" cy="20" r="14" fill="#94a3b8" opacity="0.52"/>
+          <rect x="26" y="108" width="14" height="48" rx="3" fill="#92400e"/>
+          <circle cx="33" cy="92" r="28" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+          <!-- Bờ cỏ nơi 4 học sinh đứng -->
+          <path d="M0 164 Q320 148 640 174 L640 208 L0 208 Z" fill="#4ade80"/>
+          <!-- Biển gỗ cắm bên bờ ghi "CỨU SÔNG XANH!" -->
+          <rect x="598" y="122" width="12" height="76" fill="#78350f"/>
+          <rect x="506" y="76" width="196" height="54" rx="8" fill="#fef3c7" stroke="#8b4513" stroke-width="4.5"/>
+          <text x="604" y="109" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#b91c1c">CỨU SÔNG XANH!</text>
+          <!-- 4 bạn học sinh tiểu học áo trắng, khăn quàng đỏ -->
+          ${drawStudent(130, 138, { scale: 1.06, girl: true, armsUp: true, hairClip: "#ec4899" })}
+          ${drawStudent(235, 138, { scale: 1.08, girl: false, raiseRight: true })}
+          ${drawStudent(345, 138, { scale: 1.08, girl: true, pointRight: true, hairClip: "#f59e0b" })}
+          ${drawStudent(448, 138, { scale: 1.06, girl: false, glasses: true, armsUp: true })}
+          <!-- Dòng sông có rác nhựa, túi ni-lông và chú cá buồn -->
+          <path d="M0 202 Q240 184 520 204 T900 196 L900 285 L0 285 Z" fill="url(#cRiv)"/>
+          <g transform="translate(135,232) rotate(-10)">
+            <rect width="42" height="17" rx="5" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.2"/>
+            <rect x="42" y="4" width="8" height="9" rx="2" fill="#ef4444"/>
+          </g>
+          <g transform="translate(375,228) rotate(8)">
+            <path d="M6 6 L36 6 L40 30 L2 30 Z" fill="#fef08a" stroke="#ca8a04" stroke-width="2.2"/>
+            <path d="M12 6 Q21 -5 30 6" fill="none" stroke="#ca8a04" stroke-width="2.2"/>
+          </g>
+          <g transform="translate(745,232) rotate(-12)">
+            <rect width="38" height="16" rx="5" fill="#bae6fd" stroke="#0284c7" stroke-width="2"/>
+            <rect x="38" y="4" width="7" height="8" rx="2" fill="#22c55e"/>
+          </g>
+          <g transform="translate(565,222)">
+            <ellipse cx="32" cy="18" rx="25" ry="14" fill="#fb923c" stroke="#c2410c" stroke-width="2.5"/>
+            <polygon points="56,18 72,7 72,29" fill="#fb923c" stroke="#c2410c" stroke-width="2.5"/>
+            <circle cx="21" cy="14" r="3" fill="#0f172a"/>
+            <path d="M15 24 Q22 19 29 24" fill="none" stroke="#0f172a" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M22 20 Q19 26 22 30 Q25 26 22 20 Z" fill="#38bdf8"/>
+          </g>
+        </svg>
+      `,
+
+      // Màn 1: 2 học sinh tiểu học thảo luận bên bảng lớp & bóng đèn sáng ở giữa
+      stage1: () => `
+        <svg viewBox="0 0 900 245" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="2 học sinh tiểu học đeo khăn quàng đỏ suy nghĩ thảo luận bên bảng lớp học">
+          <rect width="900" height="245" fill="#fef9c3"/>
+          <rect x="30" y="24" width="124" height="106" rx="6" fill="#bae6fd" stroke="#8b4513" stroke-width="5"/>
+          <line x1="92" y1="24" x2="92" y2="130" stroke="#8b4513" stroke-width="4"/>
+          <line x1="30" y1="77" x2="154" y2="77" stroke="#8b4513" stroke-width="4"/>
+          <circle cx="62" cy="50" r="12" fill="#fde047"/>
+          <rect x="192" y="16" width="516" height="106" rx="6" fill="#1c5f3b" stroke="#8b4513" stroke-width="7"/>
+          <text x="450" y="50" text-anchor="middle" font-family="Arial" font-size="17" font-weight="bold" fill="#fef08a">TRUY TÌM THỦ PHẠM LÀM BẨN DÒNG SÔNG</text>
+          <text x="450" y="78" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#ffffff">Những thứ gì đang làm nước sông bị ô nhiễm?</text>
+          <text x="450" y="102" text-anchor="middle" font-family="Arial" font-size="14" fill="#bbf7d0">Cùng nhau viết nhanh và dán lên bảng lớp nhé!</text>
+          <!-- Bóng đèn ý tưởng sáng ở giữa -->
+          <g transform="translate(450, 130)">
+            <line x1="0" y1="-28" x2="0" y2="-38" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="-22" y1="-20" x2="-30" y2="-28" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round"/>
+            <line x1="22" y1="-20" x2="30" y2="-28" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="0" cy="-2" r="20" fill="#fde047" stroke="#d97706" stroke-width="3"/>
+            <path d="M-8 14 H8 L6 24 H-6 Z" fill="#94a3b8" stroke="#475569" stroke-width="2"/>
+            <path d="M-6 -4 Q0 -12 6 -4 Q0 4 0 12" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+          <circle cx="796" cy="68" r="30" fill="#ffffff" stroke="#b45309" stroke-width="4"/>
+          <line x1="796" y1="68" x2="796" y2="50" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+          <line x1="796" y1="68" x2="812" y2="68" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+          ${drawStudent(315, 146, { scale: 1.12, girl: true, raiseRight: true, hairClip: "#ec4899" })}
+          ${drawStudent(585, 146, { scale: 1.12, girl: false, glasses: true, armsUp: true })}
+          <rect x="200" y="184" width="500" height="22" rx="5" fill="#d97706" stroke="#78350f" stroke-width="3.5"/>
+          <rect x="228" y="206" width="16" height="39" fill="#8b4513"/>
+          <rect x="656" y="206" width="16" height="39" fill="#8b4513"/>
+          <rect x="282" y="168" width="76" height="16" rx="2" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+          <rect x="418" y="170" width="64" height="14" rx="2" fill="#fbcfe8" stroke="#db2777" stroke-width="1.8"/>
+          <rect x="542" y="168" width="76" height="16" rx="2" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+        </svg>
+      `,
+
+      // Màn 2: 2 học sinh cầm kính lúp quan sát cốc nước sạch và cốc nước đục bẩn
+      stage2: () => `
+        <svg viewBox="0 0 900 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="2 học sinh tiểu học đeo khăn quàng đỏ cầm kính lúp quan sát cốc nước sạch và cốc nước đục bẩn">
+          <defs>
+            <linearGradient id="s2Sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#bae6fd"/><stop offset="100%" stop-color="#f0f9ff"/></linearGradient>
+          </defs>
+          <rect width="900" height="240" fill="url(#s2Sky)"/>
+          <circle cx="810" cy="48" r="24" fill="#fde047" stroke="#f59e0b" stroke-width="3"/>
+          <path d="M0 144 Q240 94 490 138 T900 128 L900 240 L0 240 Z" fill="#86efac"/>
+          <path d="M0 176 Q250 156 520 182 T900 170 L900 240 L0 240 Z" fill="#38bdf8"/>
+          <rect x="54" y="84" width="14" height="48" rx="3" fill="#92400e"/>
+          <circle cx="61" cy="68" r="28" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+          <rect x="348" y="142" width="204" height="14" rx="4" fill="#b45309" stroke="#78350f" stroke-width="2.5"/>
+          <rect x="366" y="156" width="10" height="34" fill="#78350f"/>
+          <rect x="524" y="156" width="10" height="34" fill="#78350f"/>
+          <!-- Cốc nước sạch -->
+          <rect x="382" y="100" width="42" height="42" rx="4" fill="#ffffff" stroke="#0284c7" stroke-width="2.5"/>
+          <rect x="385" y="114" width="36" height="25" rx="2" fill="#7dd3fc"/>
+          <text x="403" y="92" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#0369a1">Nước sạch</text>
+          <!-- Cốc nước bẩn -->
+          <rect x="476" y="100" width="42" height="42" rx="4" fill="#ffffff" stroke="#78350f" stroke-width="2.5"/>
+          <rect x="479" y="114" width="36" height="25" rx="2" fill="#a8a29e"/>
+          <circle cx="490" cy="126" r="2.6" fill="#44403c"/><circle cx="504" cy="122" r="2.2" fill="#44403c"/>
+          <text x="497" y="92" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#991b1b">Nước bẩn</text>
+          ${drawStudent(268, 122, { scale: 1.12, girl: true, holdingMagnifier: true, hairClip: "#ec4899" })}
+          ${drawStudent(635, 122, { scale: 1.12, girl: false, glasses: true, stopLeft: true })}
+          <g transform="translate(596, 134)">
+            <line x1="0" y1="0" x2="-12" y2="-10" stroke="#78350f" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="-20" cy="-18" r="11" fill="#e0f2fe" fill-opacity="0.72" stroke="#0369a1" stroke-width="3"/>
+          </g>
+        </svg>
+      `,
+
+      // Màn 3 - Câu chuyện 1: Buổi dã ngoại bên bờ suối
+      story_0: () => `
+        <svg viewBox="0 0 860 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Nhóm học sinh tiểu học đi dã ngoại bên bờ suối">
+          <rect width="860" height="230" fill="#bae6fd"/>
+          <circle cx="786" cy="46" r="24" fill="#fde047" stroke="#f59e0b" stroke-width="3"/>
+          <path d="M0 146 Q220 92 470 134 T860 124 L860 230 L0 230 Z" fill="#86efac"/>
+          <path d="M0 174 Q250 152 510 180 T860 168 L860 230 L0 230 Z" fill="#38bdf8"/>
+          <rect x="52" y="84" width="14" height="44" fill="#92400e"/>
+          <polygon points="59,28 22,92 96,92" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+          <rect x="655" y="80" width="66" height="72" rx="6" fill="#16a34a" stroke="#14532d" stroke-width="3.5"/>
+          <rect x="647" y="70" width="82" height="13" rx="4" fill="#22c55e" stroke="#14532d" stroke-width="3"/>
+          <text x="688" y="120" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#ffffff">RÁC</text>
+          <polygon points="175,150 495,150 525,172 145,172" fill="#fca5a5" stroke="#dc2626" stroke-width="2.5"/>
+          ${drawStudent(225, 106, { scale: 1.04, girl: false, mood: "worried" })}
+          ${drawStudent(335, 106, { scale: 1.06, girl: false })}
+          <rect x="358" y="128" width="28" height="17" rx="3" fill="#ffffff" stroke="#475569" stroke-width="2.2"/>
+          <rect x="364" y="114" width="16" height="10" rx="3" fill="#bae6fd" stroke="#0284c7" stroke-width="1.8"/>
+          ${drawStudent(445, 106, { scale: 1.06, girl: true, stopLeft: true, pointRight: true, hairClip: "#ec4899" })}
+          <path d="M510 116 L632 116" stroke="#15803d" stroke-width="4" stroke-dasharray="8 6"/>
+          <polygon points="638,116 622,108 622,124" fill="#15803d"/>
+        </svg>
+      `,
+
+      // Màn 3 - Câu chuyện 2: Giờ ra chơi ở khu rửa tay trường em
+      story_1: () => `
+        <svg viewBox="0 0 860 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sân trường tiểu học và khu rửa tay có vòi nước chảy xối xả">
+          <rect width="860" height="230" fill="#e0f2fe"/>
+          <rect x="28" y="34" width="210" height="86" fill="#fef3c7" stroke="#b45309" stroke-width="3"/>
+          <polygon points="18,36 133,8 248,36" fill="#dc2626" stroke="#991b1b" stroke-width="2.5"/>
+          <rect x="64" y="54" width="38" height="34" fill="#bae6fd" stroke="#78350f" stroke-width="2.5"/>
+          <rect x="164" y="54" width="38" height="34" fill="#bae6fd" stroke="#78350f" stroke-width="2.5"/>
+          <line x1="274" y1="20" x2="274" y2="128" stroke="#64748b" stroke-width="4"/>
+          <rect x="274" y="22" width="44" height="28" fill="#ef4444"/>
+          <polygon points="296,27 298,33 304,33 299,37 301,43 296,39 291,43 293,37 288,33 294,33" fill="#fde047"/>
+          <rect x="358" y="18" width="472" height="192" rx="8" fill="#f8fafc" stroke="#0284c7" stroke-width="3.5"/>
+          <line x1="358" y1="66" x2="830" y2="66" stroke="#bae6fd" stroke-width="2"/>
+          <line x1="358" y1="114" x2="830" y2="114" stroke="#bae6fd" stroke-width="2"/>
+          <line x1="358" y1="162" x2="830" y2="162" stroke="#bae6fd" stroke-width="2"/>
+          <rect x="598" y="30" width="208" height="44" rx="8" fill="#dcfce7" stroke="#15803d" stroke-width="3"/>
+          <text x="702" y="58" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#15803d">TIẾT KIỆM NƯỚC</text>
+          <rect x="424" y="138" width="232" height="44" rx="10" fill="#ffffff" stroke="#64748b" stroke-width="3.5"/>
+          <rect x="522" y="182" width="36" height="28" fill="#cbd5e1" stroke="#64748b" stroke-width="2.5"/>
+          <path d="M476 90 H534 Q548 90 548 104 V112" fill="none" stroke="#475569" stroke-width="11" stroke-linecap="round"/>
+          <rect x="492" y="70" width="28" height="9" rx="3" fill="#0284c7"/>
+          <rect x="542" y="112" width="12" height="28" rx="4" fill="#38bdf8"/>
+          <circle cx="530" cy="132" r="5" fill="#7dd3fc"/>
+          <circle cx="566" cy="130" r="5" fill="#7dd3fc"/>
+          <rect x="0" y="204" width="860" height="26" fill="#cbd5e1"/>
+          ${drawStudent(195, 138, { scale: 1.08, girl: true, mood: "surprised", pointRight: true, hairClip: "#f59e0b" })}
+        </svg>
+      `,
+
+      // Màn 4: Trái Đất xanh mỉm cười mọc mầm cây
+      earthCenter: () => `
+        <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trái Đất xanh mỉm cười mọc mầm cây">
+          <rect width="160" height="160" fill="#e0f2fe"/>
+          <circle cx="80" cy="92" r="52" fill="#38bdf8" stroke="#0284c7" stroke-width="4"/>
+          <path d="M46 76 Q64 52 88 68 Q112 82 122 64 Q130 108 100 128 Q64 140 42 108 Z" fill="#4ade80"/>
+          <circle cx="64" cy="90" r="4.5" fill="#0f172a"/>
+          <circle cx="96" cy="90" r="4.5" fill="#0f172a"/>
+          <circle cx="65.5" cy="88.5" r="1.5" fill="#ffffff"/>
+          <circle cx="97.5" cy="88.5" r="1.5" fill="#ffffff"/>
+          <circle cx="54" cy="98" r="5" fill="#fda4af" opacity="0.72"/>
+          <circle cx="106" cy="98" r="5" fill="#fda4af" opacity="0.72"/>
+          <path d="M65 104 Q80 118 95 104" fill="none" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>
+          <line x1="80" y1="40" x2="80" y2="22" stroke="#15803d" stroke-width="4" stroke-linecap="round"/>
+          <path d="M80 28 Q56 10 48 26 Q64 38 80 28 Z" fill="#22c55e" stroke="#15803d" stroke-width="2.5"/>
+          <path d="M80 28 Q104 10 112 26 Q96 38 80 28 Z" fill="#22c55e" stroke="#15803d" stroke-width="2.5"/>
+        </svg>
+      `,
+
+      // Màn 5: Dòng sông trong xanh lấp lánh, cầu vồng 7 sắc, mặt trời cười, đôi cá & 4 học sinh giơ cúp vàng
+      victory: () => `
+        <svg viewBox="0 0 900 285" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dòng sông trong xanh lấp lánh, cầu vồng 7 sắc, mặt trời cười tươi, đôi cá bơi vui vẻ và 4 học sinh tiểu học giơ cao cúp vàng">
+          <defs>
+            <linearGradient id="vSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#e0f2fe"/></linearGradient>
+            <linearGradient id="vRiv" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0284c7"/><stop offset="50%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#0ea5e9"/></linearGradient>
+          </defs>
+          <rect width="900" height="285" fill="url(#vSky)"/>
+          <!-- Cầu vồng 7 sắc -->
+          <path d="M170 206 A280 176 0 0 1 730 206" fill="none" stroke="#ef4444" stroke-width="9"/>
+          <path d="M179 206 A271 167 0 0 1 721 206" fill="none" stroke="#f97316" stroke-width="9"/>
+          <path d="M188 206 A262 158 0 0 1 712 206" fill="none" stroke="#facc15" stroke-width="9"/>
+          <path d="M197 206 A253 149 0 0 1 703 206" fill="none" stroke="#22c55e" stroke-width="9"/>
+          <path d="M206 206 A244 140 0 0 1 694 206" fill="none" stroke="#38bdf8" stroke-width="9"/>
+          <path d="M215 206 A235 131 0 0 1 685 206" fill="none" stroke="#6366f1" stroke-width="9"/>
+          <path d="M224 206 A226 122 0 0 1 676 206" fill="none" stroke="#a855f7" stroke-width="9"/>
+          <!-- Mặt trời cười tươi -->
+          <circle cx="88" cy="56" r="29" fill="#fde047" stroke="#f59e0b" stroke-width="3.5"/>
+          <circle cx="78" cy="50" r="3" fill="#92400e"/>
+          <circle cx="98" cy="50" r="3" fill="#92400e"/>
+          <path d="M77 61 Q88 71 99 61" fill="none" stroke="#92400e" stroke-width="3" stroke-linecap="round"/>
+          <!-- Bờ cỏ xanh và cây -->
+          <path d="M0 166 Q230 124 470 156 T900 148 L900 285 L0 285 Z" fill="#4ade80"/>
+          <rect x="40" y="106" width="16" height="48" rx="3" fill="#92400e"/>
+          <circle cx="48" cy="92" r="30" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+          <rect x="832" y="100" width="16" height="48" rx="3" fill="#92400e"/>
+          <circle cx="840" cy="86" r="30" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+          <!-- 4 bạn học sinh tiểu học giơ cao cúp vàng -->
+          ${drawStudent(235, 128, { scale: 1.08, girl: true, armsUp: true, hairClip: "#ec4899" })}
+          ${drawStudent(380, 128, { scale: 1.08, girl: false, armsUp: true, holdingTrophy: true })}
+          ${drawStudent(525, 128, { scale: 1.08, girl: true, armsUp: true, hairClip: "#f59e0b" })}
+          ${drawStudent(665, 128, { scale: 1.08, girl: false, glasses: true, armsUp: true })}
+          <!-- Dòng sông trong xanh lấp lánh & đôi cá vui vẻ -->
+          <path d="M0 206 Q250 188 520 208 T900 200 L900 285 L0 285 Z" fill="url(#vRiv)"/>
+          <path d="M90 238 Q130 228 170 238" fill="none" stroke="#e0f2fe" stroke-width="4" stroke-linecap="round"/>
+          <path d="M690 244 Q735 234 780 244" fill="none" stroke="#e0f2fe" stroke-width="4" stroke-linecap="round"/>
+          <g transform="translate(260, 226)">
+            <ellipse cx="26" cy="14" rx="20" ry="11" fill="#fb923c" stroke="#c2410c" stroke-width="2.2"/>
+            <polygon points="45,14 58,5 58,23" fill="#fb923c" stroke="#c2410c" stroke-width="2.2"/>
+            <circle cx="17" cy="11" r="2.5" fill="#0f172a"/>
+            <path d="M13 17 Q18 22 24 17" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(520, 228)">
+            <ellipse cx="24" cy="13" rx="18" ry="10" fill="#fde047" stroke="#ca8a04" stroke-width="2.2"/>
+            <polygon points="41,13 53,5 53,21" fill="#fde047" stroke="#ca8a04" stroke-width="2.2"/>
+            <circle cx="16" cy="10" r="2.3" fill="#0f172a"/>
+            <path d="M12 16 Q17 20 22 16" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+          </g>
+        </svg>
+      `
+    };
+
+    // 6 tranh vẽ SVG riêng cho 6 thẻ tranh ở Chặng 2
+    const CARD_SVGS = {
+      1: `<svg viewBox="0 0 180 110" xmlns="http://www.w3.org/2000/svg">
+            <rect width="180" height="110" fill="#e0f2fe"/>
+            <rect y="58" width="180" height="52" fill="#64748b"/>
+            <path d="M0 64 Q45 54 90 64 T180 64" fill="none" stroke="#cbd5e1" stroke-width="3"/>
+            <g transform="translate(24,64) rotate(-14)"><rect width="46" height="20" rx="5" fill="#bae6fd" stroke="#0284c7" stroke-width="2.5"/><rect x="46" y="5" width="9" height="10" rx="2" fill="#ef4444"/></g>
+            <g transform="translate(106,56) rotate(10)"><path d="M6 8 L38 8 L44 36 L2 36 Z" fill="#fef08a" stroke="#ca8a04" stroke-width="2.5"/><path d="M12 8 Q22 -4 32 8" fill="none" stroke="#ca8a04" stroke-width="2.5"/></g>
+            <path d="M85 18 L85 44" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
+            <polygon points="85,50 77,38 93,38" fill="#dc2626"/>
+          </svg>`,
+      2: `<svg viewBox="0 0 180 110" xmlns="http://www.w3.org/2000/svg">
+            <rect width="180" height="110" fill="#f1f5f9"/>
+            <rect x="14" y="34" width="72" height="52" rx="4" fill="#94a3b8" stroke="#334155" stroke-width="2.5"/>
+            <rect x="26" y="12" width="14" height="22" fill="#64748b"/><rect x="52" y="18" width="12" height="16" fill="#64748b"/>
+            <circle cx="38" cy="7" r="7" fill="#cbd5e1"/>
+            <rect x="86" y="64" width="32" height="14" fill="#475569"/>
+            <path d="M118 71 Q136 74 140 94" fill="none" stroke="#1e293b" stroke-width="10" stroke-linecap="round"/>
+            <rect y="84" width="180" height="26" fill="#475569"/>
+          </svg>`,
+      3: `<svg viewBox="0 0 180 110" xmlns="http://www.w3.org/2000/svg">
+            <rect width="180" height="110" fill="#fef9c3"/>
+            <rect y="64" width="108" height="46" fill="#86efac"/>
+            <rect x="108" y="68" width="72" height="42" fill="#64748b"/>
+            <rect x="26" y="32" width="34" height="44" rx="5" fill="#facc15" stroke="#b45309" stroke-width="2.5"/>
+            <path d="M43 32 L43 20 L86 28" fill="none" stroke="#78350f" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="98" cy="34" r="5" fill="#ef4444" opacity="0.75"/>
+            <circle cx="114" cy="44" r="6" fill="#ef4444" opacity="0.65"/>
+            <circle cx="132" cy="56" r="7" fill="#ef4444" opacity="0.55"/>
+            <text x="43" y="58" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#991b1b">!</text>
+          </svg>`,
+      4: `<svg viewBox="0 0 180 110" xmlns="http://www.w3.org/2000/svg">
+            <rect width="180" height="110" fill="#f0fdf4"/>
+            <rect y="82" width="180" height="28" fill="#86efac"/>
+            ${drawStudent(62, 46, { scale: 0.78, girl: true, pointRight: true, hairClip: "#ec4899" })}
+            <rect x="114" y="44" width="42" height="48" rx="5" fill="#16a34a" stroke="#14532d" stroke-width="2.5"/>
+            <rect x="109" y="36" width="52" height="9" rx="3" fill="#22c55e" stroke="#14532d" stroke-width="2"/>
+            <text x="135" y="74" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#ffffff">RÁC</text>
+            <rect x="94" y="34" width="16" height="9" rx="2" fill="#bae6fd" stroke="#0284c7" stroke-width="1.8"/>
+          </svg>`,
+      5: `<svg viewBox="0 0 180 110" xmlns="http://www.w3.org/2000/svg">
+            <rect width="180" height="110" fill="#e0f2fe"/>
+            <rect y="82" width="180" height="28" fill="#cbd5e1"/>
+            ${drawStudent(58, 46, { scale: 0.78, girl: false, pointRight: true })}
+            <path d="M108 42 H138 Q146 42 146 50 V56" fill="none" stroke="#475569" stroke-width="8" stroke-linecap="round"/>
+            <rect x="116" y="28" width="20" height="6" rx="2" fill="#0284c7"/>
+            <path d="M146 62 Q140 72 146 76 Q152 72 146 62 Z" fill="#38bdf8"/>
+            <rect x="104" y="74" width="62" height="14" rx="4" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+          </svg>`,
+      6: `<svg viewBox="0 0 180 110" xmlns="http://www.w3.org/2000/svg">
+            <rect width="180" height="110" fill="#dcfce7"/>
+            <rect y="78" width="180" height="32" fill="#4ade80"/>
+            ${drawStudent(44, 46, { scale: 0.74, girl: true, hairClip: "#f59e0b" })}
+            ${drawStudent(136, 46, { scale: 0.74, girl: false, glasses: true })}
+            <rect x="85" y="54" width="10" height="30" rx="2" fill="#92400e"/>
+            <circle cx="90" cy="40" r="22" fill="#22c55e" stroke="#15803d" stroke-width="2.5"/>
+            <circle cx="82" cy="34" r="5" fill="#86efac"/>
+          </svg>`
+    };
+
+    // 3 hình vẽ nhỏ xinh cho 3 câu hỏi trắc nghiệm Chặng 2
+    const QUIZ_MINI_SVGS = [
+      `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+        <rect width="80" height="80" fill="#fef3c7"/>
+        <path d="M26 24 Q22 18 26 12" fill="none" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M40 22 Q36 16 40 10" fill="none" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M54 24 Q50 18 54 12" fill="none" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="20" y="28" width="40" height="42" rx="5" fill="#ffffff" stroke="#78350f" stroke-width="3"/>
+        <rect x="23" y="40" width="34" height="27" rx="3" fill="#a8a29e"/>
+        <circle cx="33" cy="52" r="2.8" fill="#44403c"/><circle cx="46" cy="56" r="2.5" fill="#44403c"/>
+      </svg>`,
+      `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+        <rect width="80" height="80" fill="#fee2e2"/>
+        <path d="M40 10 L64 20 V42 C64 57 53 67 40 72 C27 67 16 57 16 42 V20 Z" fill="#ffffff" stroke="#dc2626" stroke-width="3"/>
+        <rect x="35" y="26" width="10" height="28" rx="2" fill="#ef4444"/>
+        <rect x="26" y="35" width="28" height="10" rx="2" fill="#ef4444"/>
+      </svg>`,
+      `<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+        <rect width="80" height="80" fill="#dcfce7"/>
+        <path d="M40 12 C40 12 20 36 20 50 C20 62 29 70 40 70 C51 70 60 62 60 50 C60 36 40 12 40 12 Z" fill="#38bdf8" stroke="#0369a1" stroke-width="3"/>
+        <circle cx="33" cy="48" r="2.6" fill="#0f172a"/><circle cx="47" cy="48" r="2.6" fill="#0f172a"/>
+        <path d="M34 55 Q40 61 46 55" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M56 26 Q66 16 72 26 Q64 34 56 26 Z" fill="#22c55e" stroke="#15803d" stroke-width="2"/>
+      </svg>`
+    ];
+
+    /* -------------------------------------------------------------------------
+       3. NỘI DUNG TRÒ CHƠI CỐ ĐỊNH CHUẨN BÀI 3 - KHOA HỌC LỚP 4
+       ------------------------------------------------------------------------- */
+    const GAME_DATA = {
+      subtitle: "Khoa học lớp 4 – Bài 3: Ô nhiễm và bảo vệ nguồn nước (Chương trình GDPT 2018)",
+      quickKeywords: [
+        "Rác thải nhựa và túi ni-lông",
+        "Nước thải sinh hoạt",
+        "Nước thải từ nhà máy",
+        "Thuốc trừ sâu và phân hóa học",
+        "Xác động vật chết",
+        "Dầu mỡ đổ xuống cống"
+      ],
+      sortCards: [
+        { id: 1, text: "Chai nhựa vứt xuống sông", type: "dirty" },
+        { id: 2, text: "Nhà máy xả nước thải", type: "dirty" },
+        { id: 3, text: "Phun thuốc trừ sâu quá mức", type: "dirty" },
+        { id: 4, text: "Bỏ rác đúng thùng phân loại", type: "clean" },
+        { id: 5, text: "Khóa vòi nước tiết kiệm", type: "clean" },
+        { id: 6, text: "Trồng cây xanh và dọn kênh mương", type: "clean" }
+      ],
+      quizzes: [
+        {
+          q: "Câu 1: Dấu hiệu nào sau đây cho thấy nguồn nước bị ô nhiễm?",
+          options: [
+            "A. Nước trong suốt, không màu, không mùi và không có vị lạ.",
+            "B. Nước có màu lạ, mùi hôi tanh, chứa nhiều rác hoặc chất bẩn.",
+            "C. Nước chảy nhẹ nhàng và có nhiều cá tôm bơi lội khỏe mạnh."
+          ],
+          answer: 1
+        },
+        {
+          q: "Câu 2: Sử dụng nguồn nước bị ô nhiễm gây ra tác hại gì cho sức khỏe con người?",
+          options: [
+            "A. Giúp cơ thể khỏe mạnh và lớn nhanh hơn.",
+            "B. Không gây ảnh hưởng gì đến cơ thể.",
+            "C. Dễ mắc bệnh đường tiêu hóa, bệnh ngoài da, đau mắt và ảnh hưởng sức khỏe."
+          ],
+          answer: 2
+        },
+        {
+          q: "Câu 3: Việc làm nào dưới đây góp phần bảo vệ nguồn nước sạch?",
+          options: [
+            "A. Đổ dầu ăn thừa và thức ăn vụn xuống cống thoát nước.",
+            "B. Không xả rác xuống ao hồ, khóa vòi nước sau khi dùng và nhắc mọi người cùng làm.",
+            "C. Để vòi nước chảy tràn khi không có ai sử dụng."
+          ],
+          answer: 1
+        }
+      ],
+      stories: [
+        {
+          scene: "story_0",
+          title: "Câu chuyện 1: Buổi dã ngoại bên bờ suối",
+          story: "Cuối tuần đi chơi cùng nhóm bạn bên bờ suối, ăn xong một bạn định ném vỏ hộp xốp và chai nhựa xuống nước cho tiện. Em sẽ làm gì?",
+          choices: [
+            { text: "A. Làm ngơ không nói gì vì không phải rác của mình.", level: "bad", effect: "Rác nhựa và hộp xốp trôi theo dòng suối, làm bẩn nguồn nước và gây hại cho cá tôm sống dưới nước." },
+            { text: "B. Nhẹ nhàng khuyên bạn đừng ném xuống suối và cùng nhau gom hết rác bỏ vào thùng rác xanh gần đó.", level: "good", effect: "Tuyệt vời! Bờ suối vẫn sạch đẹp, bạn em hiểu ra và rất vui khi cùng nhau giữ sạch dòng nước!" },
+            { text: "C. Quát mắng bạn thật to trước mặt cả nhóm rồi bỏ về.", level: "warn", effect: "Em có lòng tốt bảo vệ dòng suối, nhưng quát mắng khiến bạn ngại ngùng và khó nghe theo. Góp ý nhẹ nhàng sẽ hiệu quả hơn nhiều!" }
+          ]
+        },
+        {
+          scene: "story_1",
+          title: "Câu chuyện 2: Giờ ra chơi ở khu rửa tay trường em",
+          story: "Giờ ra chơi, em nhìn thấy một vòi nước ở bồn rửa tay vẫn chảy xối xả dù không có ai dùng. Em sẽ làm gì?",
+          choices: [
+            { text: "A. Chạy thẳng vào lớp vì không phải mình mở vòi nước.", level: "bad", effect: "Rất nhiều nước sạch bị chảy phí đi và sàn nhà bị ướt dễ làm các bạn trượt ngã." },
+            { text: "B. Lại gần khóa chặt vòi nước lại; nếu vòi bị hỏng thì báo ngay cho thầy cô hoặc bác bảo vệ.", level: "good", effect: "Hoan hô người hùng nhí! Em đã tiết kiệm được thật nhiều nước sạch và giúp trường kịp thời sửa chữa vòi nước!" },
+            { text: "C. Đứng nghịch té nước thêm một lúc cho vui rồi mới khóa vòi.", level: "warn", effect: "Nghịch nước vẫn làm lãng phí nước sạch và ướt quần áo dễ bị cảm lạnh. Hãy khóa ngay vòi nước em nhé!" }
+          ]
+        }
+      ],
+      awardTitle: "CHIẾN BINH BẢO VỆ NGUỒN NƯỚC"
+    };
+
+    const STATIONS = [
+      { idx: 0, short: "Xuất phát" },
+      { idx: 1, short: "1. Truy tìm thủ phạm" },
+      { idx: 2, short: "2. Giải mã dòng nước" },
+      { idx: 3, short: "3. Em là người hùng" },
+      { idx: 4, short: "4. Bức tranh cam kết" },
+      { idx: 5, short: "5. Về đích" }
+    ];
+
+    const CORNER_STYLES = [
+      { cls: "c-blue",   label: "Bạn số 1", portrait: { bg: "#bae6fd", girl: true,  glasses: false, hairClip: "#ec4899" } },
+      { cls: "c-amber",  label: "Bạn số 2", portrait: { bg: "#fde68a", girl: false, glasses: false, hairClip: "#f59e0b" } },
+      { cls: "c-pink",   label: "Bạn số 3", portrait: { bg: "#fbcfe8", girl: true,  glasses: false, hairClip: "#0ea5e9" } },
+      { cls: "c-purple", label: "Bạn số 4", portrait: { bg: "#ddd6fe", girl: false, glasses: true,  hairClip: "#16a34a" } }
+    ];
+
+    /* -------------------------------------------------------------------------
+       4. TRẠNG THÁI HÀNH TRÌNH & HÀM TIỆN ÍCH
+       ------------------------------------------------------------------------- */
+    let quickView = false;
+    let currentScreen = 0;
+    let maxUnlocked = 0;
+
+    function createEmptyState() {
+      return {
+        teamName: "",
+        className: "",
+        members: "",
+        keysEarned: [false, false, false, false],
+        ideas: [],
+        sortAssignments: {},
+        sortChecked: false,
+        sortScore: 0,
+        quizAnswers: {},
+        quizChecked: false,
+        quizScore: 0,
+        storyChoices: {},
+        storyReasons: {},
+        corners: [
+          { name: "Bạn số 1", idea: "" },
+          { name: "Bạn số 2", idea: "" },
+          { name: "Bạn số 3", idea: "" },
+          { name: "Bạn số 4", idea: "" }
+        ],
+        teamPromise: ""
+      };
+    }
+
+    let state = createEmptyState();
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove("show"), 2600);
+    }
+
+    function setAlert(id, msg, type) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (!msg) {
+        el.className = "alert-box";
+        el.textContent = "";
+        return;
+      }
+      el.className = "alert-box show " + (type === "ok" ? "alert-ok" : "alert-err");
+      el.textContent = msg;
+    }
+
+    function openConfirm(title, text, onYes) {
+      document.getElementById("confirm-title").textContent = title;
+      document.getElementById("confirm-text").textContent = text;
+      document.getElementById("confirm-yes").onclick = function () {
+        closeConfirm();
+        if (typeof onYes === "function") onYes();
+      };
+      document.getElementById("modal-confirm").classList.add("open");
+    }
+
+    function closeConfirm() {
+      document.getElementById("modal-confirm").classList.remove("open");
+    }
+
+    /* -------------------------------------------------------------------------
+       5. BẢN ĐỒ DÒNG SÔNG & ĐIỀU HƯỚNG 6 TRẠM
+       ------------------------------------------------------------------------- */
+    function renderRiverMap() {
+      const keys = state.keysEarned.filter(Boolean).length;
+      document.getElementById("key-counter").textContent = `🔑 Chìa khóa đã tìm: ${keys} / 4`;
+
+      const grid = document.getElementById("stones-grid");
+      grid.innerHTML = STATIONS.map(st => {
+        const isActive = currentScreen === st.idx;
+        const isDone = st.idx < maxUnlocked && !isActive;
+        const canClick = quickView || st.idx <= maxUnlocked;
+        let cls = "stone-station";
+        if (isActive) cls += " active";
+        else if (isDone) cls += " done";
+        if (canClick) cls += " clickable";
+        const discText = isDone ? "✓" : (canClick ? (st.idx === 0 ? "★" : String(st.idx)) : "🔒");
+        return `
+          <button type="button" class="${cls}" onclick="tryJump(${st.idx})">
+            <span class="boat-marker" aria-hidden="true">⛵</span>
+            <span class="stone-disc">${discText}</span>
+            <span class="stone-name">${escapeHtml(st.short)}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function goScreen(idx) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const el = document.getElementById("screen-" + idx);
+      if (el) el.classList.add("active");
+      currentScreen = idx;
+      if (idx > maxUnlocked) maxUnlocked = idx;
+      if (idx === 5) renderScreen5();
+      renderRiverMap();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function tryJump(idx) {
+      if (quickView || idx <= maxUnlocked) {
+        goScreen(idx);
+      } else {
+        showToast("Đội em hãy hoàn thành chặng hiện tại để nhận chìa khóa mở trạm tiếp theo nhé!");
+      }
+    }
+
+    function toggleQuickView() {
+      quickView = !quickView;
+      const link = document.getElementById("quick-view-link");
+      link.classList.toggle("on", quickView);
+      link.textContent = quickView ? "Xem nhanh các chặng (Đang bật)" : "Xem nhanh các chặng";
+      renderRiverMap();
+      showToast(quickView ? "Đã bật chế độ xem nhanh: có thể bấm vào mọi trạm trên bản đồ!" : "Đã tắt chế độ xem nhanh.");
+    }
+
+    /* -------------------------------------------------------------------------
+       6. MÀN HÌNH 0: TRẠM KHỞI HÀNH
+       ------------------------------------------------------------------------- */
+    function renderScreen0() {
+      document.getElementById("screen-0").innerHTML = `
+        <div class="notebook-sheet">
+          <span class="tape-strip tape-l" aria-hidden="true"></span>
+          <span class="tape-strip tape-r" aria-hidden="true"></span>
+          <div class="art-frame">${SCENES.cover()}</div>
+          <div class="ribbon-banner rb-orange">TRẠM KHỞI HÀNH – ĐỘI CỨU HỘ DÒNG SÔNG XANH</div>
+          <h2 class="sheet-title">Cùng nhau lên thuyền giải cứu Dòng Sông Xanh</h2>
+          <div class="story-callout">
+            Dòng sông quê hương đang buồn bã vì đầy rác thải nhựa và nước bẩn! Đội của em hãy cùng nhau vượt qua 4 chặng thử thách để tìm đủ 4 chiếc chìa khóa thần kỳ, giúp dòng sông trong xanh trở lại nhé!
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label class="field-label" for="team-name">Tên đội cứu hộ (*):</label>
+              <input type="text" id="team-name" class="text-input" value="${escapeHtml(state.teamName)}"
+                oninput="state.teamName = this.value" placeholder="Ví dụ: Đội Giọt Nước Xanh" />
+            </div>
+            <div>
+              <label class="field-label" for="team-class">Lớp (*):</label>
+              <input type="text" id="team-class" class="text-input" value="${escapeHtml(state.className)}"
+                oninput="state.className = this.value" placeholder="Ví dụ: 4A" />
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <label class="field-label" for="team-members">Tên các bạn trong đội:</label>
+            <input type="text" id="team-members" class="text-input" value="${escapeHtml(state.members)}"
+              oninput="state.members = this.value" placeholder="Ví dụ: Minh Anh, Gia Huy, Bảo Ngọc, Đức Duy" />
+          </div>
+
+          <div id="alert-0" class="alert-box"></div>
+
+          <div class="sheet-footer">
+            <span style="color:var(--ink-muted); font-weight:700;">4 chặng thử thách đang chờ đội em chinh phục!</span>
+            <button type="button" class="btn btn-green" onclick="startRescue()">⛵ Lên thuyền giải cứu!</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function startRescue() {
+      if (!state.teamName.trim() || !state.className.trim()) {
+        setAlert("alert-0", "Đội em hãy nhập đủ Tên đội cứu hộ và Lớp trước khi lên thuyền nhé!", "err");
+        return;
+      }
+      const names = (state.members || "").split(/[,;\-]/).map(s => s.trim()).filter(Boolean);
+      for (let i = 0; i < 4; i++) {
+        if (names[i]) state.corners[i].name = names[i];
+      }
+      renderScreen4();
+      setAlert("alert-0", "", "");
+      goScreen(1);
+    }
+
+    /* -------------------------------------------------------------------------
+       7. MÀN HÌNH 1: CHẶNG 1 – TRUY TÌM THỦ PHẠM
+       ------------------------------------------------------------------------- */
+    function renderScreen1() {
+      document.getElementById("screen-1").innerHTML = `
+        <div class="notebook-sheet">
+          <span class="tape-strip tape-l" aria-hidden="true"></span>
+          <span class="tape-strip tape-r" aria-hidden="true"></span>
+          <div class="art-frame">${SCENES.stage1()}</div>
+          <div class="ribbon-banner rb-teal">CHẶNG 1: TRUY TÌM THỦ PHẠM LÀM BẨN DÒNG SÔNG</div>
+          <h2 class="sheet-title">Điều gì đang làm dòng sông bị bẩn?</h2>
+          <div class="story-callout">
+            Đội em hãy suy nghĩ thật nhanh, viết ra các thủ phạm làm bẩn nguồn nước rồi dán ít nhất 3 mảnh giấy nhớ lên bảng lớp để nhận Chìa khóa số 1 nhé!
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:10px;">
+            <input type="text" id="idea-input" class="text-input" style="flex:1 1 260px;"
+              placeholder="Gõ thủ phạm làm bẩn nguồn nước rồi bấm Dán lên bảng..."
+              onkeydown="if(event.key==='Enter') addIdea()" />
+            <button type="button" class="btn btn-blue" onclick="addIdea()">📌 Dán lên bảng</button>
+          </div>
+
+          <div style="margin-top:12px; font-weight:700; color:#78350f;">Hoặc bấm chọn nhanh các thẻ gợi ý bên dưới:</div>
+          <div class="suggest-list">
+            ${GAME_DATA.quickKeywords.map((kw, i) => `
+              <button type="button" class="suggest-chip" onclick="pickSuggest(${i})">+ ${escapeHtml(kw)}</button>
+            `).join("")}
+          </div>
+
+          <div style="font-weight:700; color:#5c2d0c; margin-bottom:6px;">
+            Bảng ghim lớp học (Dán ít nhất 3 mảnh giấy nhớ để nhận Chìa khóa số 1):
+          </div>
+          <div class="corkboard" id="corkboard"></div>
+
+          <div id="alert-1" class="alert-box"></div>
+
+          <div class="sheet-footer">
+            <button type="button" class="btn btn-cream" onclick="goScreen(0)">⬅ Quay lại Xuất phát</button>
+            <button type="button" class="btn btn-green" onclick="finishStage1()">🔑 Nhận Chìa khóa 1 &amp; Sang Chặng 2</button>
+          </div>
+        </div>
+      `;
+      renderCorkboard();
+    }
+
+    function pickSuggest(i) {
+      const kw = GAME_DATA.quickKeywords[i];
+      if (kw) addIdea(kw);
+    }
+
+    function addIdea(preset) {
+      const inp = document.getElementById("idea-input");
+      const val = (preset !== undefined ? preset : (inp ? inp.value : "")).trim();
+      if (!val) {
+        showToast("Hãy viết một ý tưởng rồi bấm Dán lên bảng nhé!");
+        return;
+      }
+      if (state.ideas.includes(val)) {
+        showToast("Mảnh giấy nhớ này đã có trên bảng rồi!");
+        return;
+      }
+      state.ideas.push(val);
+      if (preset === undefined && inp) inp.value = "";
+      renderCorkboard();
+      setAlert("alert-1", "", "");
+    }
+
+    function removeIdea(i) {
+      state.ideas.splice(i, 1);
+      renderCorkboard();
+    }
+
+    function renderCorkboard() {
+      const board = document.getElementById("corkboard");
+      if (!board) return;
+      if (state.ideas.length === 0) {
+        board.innerHTML = `<div style="width:100%; text-align:center; padding:42px 12px; background:rgba(255,255,255,0.88); border-radius:8px; font-weight:700; color:#5c2d0c;">
+          Bảng ghim đang trống. Đội em hãy viết hoặc chọn thẻ gợi ý để dán những mảnh giấy nhớ đầu tiên lên bảng nhé!
+        </div>`;
+        return;
+      }
+      board.innerHTML = state.ideas.map((text, i) => `
+        <div class="sticky-card">
+          <span class="push-pin" aria-hidden="true"></span>
+          <button type="button" class="sticky-del" title="Gỡ bỏ" onclick="removeIdea(${i})">×</button>
+          <div>${escapeHtml(text)}</div>
+        </div>
+      `).join("");
+    }
+
+    function finishStage1() {
+      if (state.ideas.length < 3) {
+        setAlert("alert-1", "Đội em cần dán ít nhất 3 mảnh giấy nhớ lên bảng để nhận Chìa khóa số 1 nhé!", "err");
+        return;
+      }
+      state.keysEarned[0] = true;
+      setAlert("alert-1", "", "");
+      showToast("🔑 Tuyệt vời! Đội em đã nhận được Chìa khóa số 1!");
+      goScreen(2);
+    }
+
+    /* -------------------------------------------------------------------------
+       8. MÀN HÌNH 2: CHẶNG 2 – GIẢI MÃ DÒNG NƯỚC
+       ------------------------------------------------------------------------- */
+    function renderScreen2() {
+      document.getElementById("screen-2").innerHTML = `
+        <div class="notebook-sheet">
+          <span class="tape-strip tape-l" aria-hidden="true"></span>
+          <span class="tape-strip tape-r" aria-hidden="true"></span>
+          <div class="art-frame" style="border-color:#0369a1;">${SCENES.stage2()}</div>
+          <div class="ribbon-banner rb-blue">CHẶNG 2: GIẢI MÃ BÍ MẬT NGUỒN NƯỚC SẠCH</div>
+          <h2 class="sheet-title">Vượt qua 2 thử thách để nhận Chìa khóa số 2</h2>
+          <div class="story-callout">
+            Hoàn thành kiểm tra cả Thử thách 1 (Đưa tranh về đúng ngôi nhà) và Thử thách 2 (Mở hộp khóa tri thức) để mở đường sang Chặng 3 nhé!
+          </div>
+
+          <div class="challenge-heading">Thử thách 1: Đưa tranh về đúng ngôi nhà</div>
+          <div class="cards-tray" id="cards-tray"></div>
+
+          <div class="grid-2">
+            <div class="house-box house-dirty">
+              <div class="house-roof">🏠 Việc làm bẩn nước</div>
+              <div class="house-body" id="house-dirty"></div>
+            </div>
+            <div class="house-box house-clean">
+              <div class="house-roof">🏡 Việc giữ sạch nước</div>
+              <div class="house-body" id="house-clean"></div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:10px;">
+            <button type="button" class="btn btn-blue" onclick="checkHouses()">✅ Kiểm tra kết quả</button>
+            <button type="button" class="btn btn-cream" onclick="resetHouses()">🔄 Xếp lại</button>
+          </div>
+          <div id="alert-houses" class="alert-box"></div>
+
+          <div class="challenge-heading">Thử thách 2: Mở hộp khóa tri thức</div>
+          <div id="quiz-box-list"></div>
+          <button type="button" class="btn btn-amber" onclick="checkLockQuiz()">🔓 Mở ổ khóa</button>
+          <div id="alert-quiz" class="alert-box"></div>
+
+          <div id="alert-2" class="alert-box"></div>
+
+          <div class="sheet-footer">
+            <button type="button" class="btn btn-cream" onclick="goScreen(1)">⬅ Chặng 1</button>
+            <button type="button" class="btn btn-green" onclick="finishStage2()">🔑 Nhận Chìa khóa 2 &amp; Sang Chặng 3</button>
+          </div>
+        </div>
+      `;
+      renderHouses();
+      renderQuizList();
+    }
+
+    function renderHouses() {
+      const tray = document.getElementById("cards-tray");
+      const hDirty = document.getElementById("house-dirty");
+      const hClean = document.getElementById("house-clean");
+      if (!tray || !hDirty || !hClean) return;
+      tray.innerHTML = "";
+      hDirty.innerHTML = "";
+      hClean.innerHTML = "";
+
+      const cards = GAME_DATA.sortCards;
+      let leftCount = 0;
+
+      cards.forEach(card => {
+        const home = state.sortAssignments[card.id];
+        if (!home) {
+          leftCount++;
+          const div = document.createElement("div");
+          div.className = "pic-card";
+          div.innerHTML = `
+            <div class="pic-card-art">${CARD_SVGS[card.id]}</div>
+            <div class="pic-card-caption">${escapeHtml(card.text)}</div>
+            <div class="pic-card-actions">
+              <button type="button" class="house-pick-btn pick-dirty" onclick="putCardInHouse(${card.id}, 'dirty')">Làm bẩn nước</button>
+              <button type="button" class="house-pick-btn pick-clean" onclick="putCardInHouse(${card.id}, 'clean')">Giữ sạch nước</button>
+            </div>
+          `;
+          tray.appendChild(div);
+        } else {
+          const row = document.createElement("div");
+          row.className = "housed-item";
+          if (state.sortChecked) row.classList.add(home === card.type ? "ok" : "err");
+          const icon = state.sortChecked ? (home === card.type ? "✅" : "❌") : "🖼️";
+          row.innerHTML = `
+            <span>${icon} ${escapeHtml(card.text)}</span>
+            <button type="button" class="btn btn-sm btn-cream" onclick="takeCardOut(${card.id})">Trả lại</button>
+          `;
+          (home === "dirty" ? hDirty : hClean).appendChild(row);
+        }
+      });
+
+      if (leftCount === 0) {
+        tray.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:10px; font-weight:700; color:#15803d;">
+          ✅ Đã đưa đủ ${cards.length} thẻ tranh vào 2 ngôi nhà! Hãy bấm Kiểm tra kết quả ở dưới nhé.
+        </div>`;
+      }
+    }
+
+    function putCardInHouse(id, house) {
+      state.sortAssignments[id] = house;
+      state.sortChecked = false;
+      renderHouses();
+    }
+
+    function takeCardOut(id) {
+      delete state.sortAssignments[id];
+      state.sortChecked = false;
+      renderHouses();
+    }
+
+    function resetHouses() {
+      state.sortAssignments = {};
+      state.sortChecked = false;
+      state.sortScore = 0;
+      renderHouses();
+      setAlert("alert-houses", "", "");
+    }
+
+    function checkHouses() {
+      const cards = GAME_DATA.sortCards;
+      const count = cards.filter(c => state.sortAssignments[c.id]).length;
+      if (count < cards.length) {
+        setAlert("alert-houses", `Đội em hãy đưa đủ cả ${cards.length} thẻ tranh về 2 ngôi nhà trước khi kiểm tra nhé!`, "err");
+        return;
+      }
+      state.sortChecked = true;
+      let right = 0;
+      cards.forEach(c => { if (state.sortAssignments[c.id] === c.type) right++; });
+      state.sortScore = right;
+      renderHouses();
+      if (right === cards.length) {
+        setAlert("alert-houses", `🎉 Chính xác tuyệt đối ${right}/${cards.length} thẻ tranh!`, "ok");
+      } else {
+        setAlert("alert-houses", `Đội em đúng ${right}/${cards.length} thẻ. Các thẻ có dấu ❌ chưa về đúng nhà, hãy bấm Trả lại để xếp lại nhé!`, "err");
+      }
+    }
+
+    function renderQuizList() {
+      const box = document.getElementById("quiz-box-list");
+      if (!box) return;
+      box.innerHTML = GAME_DATA.quizzes.map((item, qi) => `
+        <div class="quiz-card">
+          <div class="quiz-top-row">
+            <div class="quiz-mini-art" aria-hidden="true">${QUIZ_MINI_SVGS[qi]}</div>
+            <div style="flex:1;"><strong>${escapeHtml(item.q)}</strong></div>
+          </div>
+          <div class="quiz-options-grid">
+            ${item.options.map((opt, oi) => {
+              let cls = "quiz-choice";
+              if (state.quizAnswers[qi] === oi) cls += " selected";
+              if (state.quizChecked) {
+                if (oi === item.answer) cls += " correct";
+                else if (state.quizAnswers[qi] === oi) cls += " wrong";
+              }
+              return `<button type="button" class="${cls}" onclick="pickQuiz(${qi}, ${oi})">${escapeHtml(opt)}</button>`;
+            }).join("")}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function pickQuiz(qi, oi) {
+      state.quizAnswers[qi] = oi;
+      state.quizChecked = false;
+      renderQuizList();
+    }
+
+    function checkLockQuiz() {
+      const quizzes = GAME_DATA.quizzes;
+      let answered = 0;
+      for (let i = 0; i < quizzes.length; i++) {
+        if (state.quizAnswers[i] !== undefined) answered++;
+      }
+      if (answered < quizzes.length) {
+        setAlert("alert-quiz", `Đội em hãy chọn đáp án cho đủ ${quizzes.length} câu hỏi trước khi mở ổ khóa nhé!`, "err");
+        return;
+      }
+      state.quizChecked = true;
+      let score = 0;
+      quizzes.forEach((item, qi) => { if (state.quizAnswers[qi] === item.answer) score++; });
+      state.quizScore = score;
+      renderQuizList();
+      if (score === quizzes.length) {
+        setAlert("alert-quiz", `🔓 Ổ khóa bật mở! Đội em trả lời đúng ${score}/${quizzes.length} câu!`, "ok");
+      } else {
+        setAlert("alert-quiz", `Đội em trả lời đúng ${score}/${quizzes.length} câu. Hãy xem các đáp án màu xanh lá để ghi nhớ nhé!`, "err");
+      }
+    }
+
+    function finishStage2() {
+      if (!state.sortChecked || !state.quizChecked) {
+        setAlert("alert-2", "Đội em hãy bấm Kiểm tra kết quả ở Thử thách 1 và Mở ổ khóa ở Thử thách 2 trước khi sang Chặng 3 nhé!", "err");
+        return;
+      }
+      state.keysEarned[1] = true;
+      setAlert("alert-2", "", "");
+      showToast("🔑 Hoan hô! Đội em đã nhận được Chìa khóa số 2!");
+      goScreen(3);
+    }
+
+    /* -------------------------------------------------------------------------
+       9. MÀN HÌNH 3: CHẶNG 3 – EM LÀ NGƯỜI HÙNG BẢO VỆ DÒNG NƯỚC
+       ------------------------------------------------------------------------- */
+    function renderScreen3() {
+      const storiesHtml = GAME_DATA.stories.map((st, si) => {
+        const chosenIdx = state.storyChoices[si];
+        const chosen = chosenIdx !== undefined ? st.choices[chosenIdx] : null;
+        const lvCls = chosen ? (chosen.level === "good" ? "outcome-good" : chosen.level === "warn" ? "outcome-warn" : "outcome-bad") : "";
+
+        return `
+          <div class="story-card">
+            <div class="story-card-title">${escapeHtml(st.title)}</div>
+            <div class="art-frame" style="border-color:#d97706;">${SCENES[st.scene]()}</div>
+            <p style="margin:0 0 10px; font-weight:700;">${escapeHtml(st.story)}</p>
+            <div>
+              ${st.choices.map((ch, ci) => `
+                <button type="button" class="hero-choice ${chosenIdx === ci ? "active" : ""}" onclick="pickStoryChoice(${si}, ${ci})">
+                  ${escapeHtml(ch.text)}
+                </button>
+              `).join("")}
+            </div>
+            <div class="next-happen-box ${chosen ? "show " + lvCls : ""}">
+              <div style="font-weight:700; margin-bottom:4px;">Điều gì xảy ra tiếp theo?</div>
+              <div>${chosen ? escapeHtml(chosen.effect) : ""}</div>
+            </div>
+            <div style="margin-top:12px;">
+              <label class="field-label" for="reason-${si}">Vì sao đội em chọn cách làm này?</label>
+              <textarea id="reason-${si}" class="text-input" rows="2"
+                placeholder="Viết 1 câu giải thích ngắn của đội em..."
+                oninput="state.storyReasons[${si}] = this.value">${escapeHtml(state.storyReasons[si] || "")}</textarea>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      document.getElementById("screen-3").innerHTML = `
+        <div class="notebook-sheet">
+          <span class="tape-strip tape-l" aria-hidden="true"></span>
+          <span class="tape-strip tape-r" aria-hidden="true"></span>
+          <div class="ribbon-banner rb-orange">CHẶNG 3: EM LÀ NGƯỜI HÙNG BẢO VỆ DÒNG NƯỚC</div>
+          <h2 class="sheet-title">Nếu là bạn nhỏ trong tranh, em sẽ làm gì?</h2>
+          <div class="story-callout">
+            Quan sát thật kỹ 2 câu chuyện dưới đây, chọn một cách xử lý để xem điều gì xảy ra tiếp theo, sau đó viết 1 câu trả lời vì sao đội em chọn cách làm này để nhận Chìa khóa số 3!
+          </div>
+
+          ${storiesHtml}
+
+          <div id="alert-3" class="alert-box"></div>
+
+          <div class="sheet-footer">
+            <button type="button" class="btn btn-cream" onclick="goScreen(2)">⬅ Chặng 2</button>
+            <button type="button" class="btn btn-green" onclick="finishStage3()">🔑 Nhận Chìa khóa 3 &amp; Sang Chặng 4</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function pickStoryChoice(si, ci) {
+      state.storyChoices[si] = ci;
+      renderScreen3();
+      setAlert("alert-3", "", "");
+    }
+
+    function finishStage3() {
+      for (let i = 0; i < GAME_DATA.stories.length; i++) {
+        if (state.storyChoices[i] === undefined) {
+          setAlert("alert-3", `Đội em hãy chọn cách làm cho Câu chuyện ${i + 1} nhé!`, "err");
+          return;
+        }
+        if (!(state.storyReasons[i] || "").trim()) {
+          setAlert("alert-3", `Đội em hãy viết 1 câu giải thích cho Câu chuyện ${i + 1} nhé!`, "err");
+          return;
+        }
+      }
+      state.keysEarned[2] = true;
+      setAlert("alert-3", "", "");
+      showToast("🔑 Xuất sắc! Đội em đã nhận được Chìa khóa số 3!");
+      goScreen(4);
+    }
+
+    /* -------------------------------------------------------------------------
+       10. MÀN HÌNH 4: CHẶNG 4 – BỨC TRANH CAM KẾT
+       ------------------------------------------------------------------------- */
+    function renderScreen4() {
+      const makeCorner = (i) => {
+        const cfg = CORNER_STYLES[i];
+        const c = state.corners[i];
+        return `
+          <div class="corner-box ${cfg.cls}">
+            <div class="corner-head">
+              <div class="student-avatar">${drawPortrait(cfg.portrait)}</div>
+              <div style="flex:1;">
+                <label class="field-label" style="margin-bottom:4px;">${cfg.label}:</label>
+                <input type="text" class="text-input" style="padding:6px 10px;"
+                  value="${escapeHtml(c.name)}" oninput="state.corners[${i}].name = this.value"
+                  placeholder="Tên của em..." />
+              </div>
+            </div>
+            <textarea class="text-input" rows="3"
+              oninput="state.corners[${i}].idea = this.value"
+              placeholder="Việc làm cụ thể em có thể làm ở nhà hoặc ở trường để giữ sạch nước...">${escapeHtml(c.idea)}</textarea>
+          </div>
+        `;
+      };
+
+      document.getElementById("screen-4").innerHTML = `
+        <div class="notebook-sheet">
+          <span class="tape-strip tape-l" aria-hidden="true"></span>
+          <span class="tape-strip tape-r" aria-hidden="true"></span>
+          <div class="ribbon-banner rb-green">CHẶNG 4: CHUNG TAY VẼ BỨC TRANH NƯỚC SẠCH</div>
+          <h2 class="sheet-title">Hoàn thiện bức tranh cam kết của cả đội</h2>
+          <div class="story-callout">
+            Mỗi bạn hãy viết 1 việc làm cụ thể mình có thể làm ở nhà hoặc ở trường vào ô của mình, sau đó cả đội cùng viết Lời hứa chung ở ô xanh lá giữa bức tranh để nhận Chìa khóa số 4!
+          </div>
+
+          <div class="wooden-table">
+            <div class="a3-poster">
+              <div class="a3-poster-title">BỨC TRANH CAM KẾT BẢO VỆ NGUỒN NƯỚC SẠCH</div>
+
+              <div class="poster-grid">
+                ${makeCorner(0)}
+                ${makeCorner(1)}
+
+                <div class="center-promise">
+                  <div class="center-flex">
+                    <div class="earth-box">${SCENES.earthCenter()}</div>
+                    <div style="flex:1; min-width:220px;">
+                      <label class="field-label" for="team-promise" style="color:#14532d; font-size:13.5pt; margin-bottom:4px;">
+                        🌟 Lời hứa chung của cả đội (*)
+                      </label>
+                      <div style="color:#166534; margin-bottom:8px;">
+                        Cả đội cùng ghép những việc làm hay nhất thành lời hứa chung bảo vệ Dòng Sông Xanh!
+                      </div>
+                      <textarea id="team-promise" class="text-input" rows="3" style="border:2.5px solid #15803d;"
+                        oninput="state.teamPromise = this.value"
+                        placeholder="Đội em cùng hứa sẽ bỏ rác đúng nơi quy định, khóa vòi nước sau khi dùng, không xả rác xuống sông hồ...">${escapeHtml(state.teamPromise)}</textarea>
+                    </div>
+                  </div>
+                </div>
+
+                ${makeCorner(2)}
+                ${makeCorner(3)}
+              </div>
+            </div>
+          </div>
+
+          <div id="alert-4" class="alert-box"></div>
+
+          <div class="sheet-footer">
+            <button type="button" class="btn btn-cream" onclick="goScreen(3)">⬅ Chặng 3</button>
+            <button type="button" class="btn btn-green" onclick="finishStage4()">🔑 Nhận Chìa khóa 4 &amp; Giải cứu Dòng Sông!</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function finishStage4() {
+      if (!state.teamPromise.trim()) {
+        setAlert("alert-4", "Đội em hãy viết Lời hứa chung của cả đội vào ô màu xanh lá ở giữa trước khi về đích nhé!", "err");
+        return;
+      }
+      state.keysEarned[3] = true;
+      setAlert("alert-4", "", "");
+      showToast("🏆 Chúc mừng! Đội em đã tìm đủ 4 chìa khóa và giải cứu Dòng Sông Xanh!");
+      goScreen(5);
+    }
+
+    /* -------------------------------------------------------------------------
+       11. MÀN HÌNH 5: VỀ ĐÍCH – CHIẾN THẮNG & PHIẾU GHI NHẬN HÀNH TRÌNH
+       ------------------------------------------------------------------------- */
+    function renderScreen5() {
+      document.getElementById("screen-5").innerHTML = `
+        <div class="notebook-sheet">
+          <span class="tape-strip tape-l" aria-hidden="true"></span>
+          <span class="tape-strip tape-r" aria-hidden="true"></span>
+          <div class="victory-banner no-print">
+            <div class="art-frame" style="border-color:#15803d;">${SCENES.victory()}</div>
+            <h2 style="font-size:15.5pt; color:#15803d; margin-bottom:4px;">
+              🏆 CHÚC MỪNG! DÒNG SÔNG XANH ĐÃ TRONG SẠCH TRỞ LẠI!
+            </h2>
+            <div class="award-medal">🏅 DANH HIỆU: ${escapeHtml(GAME_DATA.awardTitle)}</div>
+            <p style="margin:6px 0 0;">
+              Đội của em đã thu thập đủ 4 chiếc chìa khóa thần kỳ và hoàn thành xuất sắc hành trình giải cứu Dòng Sông Xanh!
+            </p>
+            <div class="export-row">
+              <button type="button" class="btn btn-blue" onclick="window.print()">🖨️ In / Lưu PDF (Khổ A4)</button>
+              <button type="button" class="btn btn-green" onclick="downloadWordFile()">📄 Tải file Word (.doc)</button>
+              <button type="button" class="btn btn-amber" onclick="copyResultText()">📋 Sao chép kết quả</button>
+            </div>
+          </div>
+
+          <div class="result-sheet" id="result-sheet"></div>
+
+          <div class="sheet-footer no-print">
+            <button type="button" class="btn btn-cream" onclick="goScreen(4)">⬅ Quay lại Chặng 4</button>
+            <button type="button" class="btn btn-amber" onclick="askRestartGame()">🔄 Chơi lại từ đầu</button>
+          </div>
+        </div>
+      `;
+      renderResultSheet();
+    }
+
+    function renderResultSheet() {
+      const sheet = document.getElementById("result-sheet");
+      if (!sheet) return;
+      const now = new Date().toLocaleString("vi-VN");
+
+      const storyRows = GAME_DATA.stories.map((st, i) => {
+        const ci = state.storyChoices[i];
+        const chText = ci !== undefined && st.choices[ci] ? st.choices[ci].text : "(Chưa chọn)";
+        const rs = (state.storyReasons[i] || "").trim() || "(Chưa viết lý do)";
+        return `<tr><td><strong>${escapeHtml(st.title)}</strong></td><td>${escapeHtml(chText)}</td><td>${escapeHtml(rs)}</td></tr>`;
+      }).join("");
+
+      const cornerLines = state.corners.map((c, idx) => {
+        const lbl = CORNER_STYLES[idx].label;
+        return `- <strong>${escapeHtml(lbl)} (${escapeHtml(c.name)}):</strong> ${escapeHtml(c.idea.trim() || "(Chưa ghi)")}`;
+      }).join("<br/>");
+
+      sheet.innerHTML = `
+        <h3>PHIẾU GHI NHẬN HÀNH TRÌNH GIẢI CỨU DÒNG SÔNG XANH</h3>
+        <p style="text-align:center; margin:0 0 8px; font-weight:700;">${escapeHtml(GAME_DATA.subtitle)}</p>
+        <div class="res-section">
+          <strong>Đội cứu hộ:</strong> ${escapeHtml(state.teamName || "Chưa nhập")} &nbsp;|&nbsp;
+          <strong>Lớp:</strong> ${escapeHtml(state.className || "Chưa nhập")} &nbsp;|&nbsp;
+          <strong>Thời gian:</strong> ${now}<br/>
+          <strong>Thành viên trong đội:</strong> ${escapeHtml(state.members || "Chưa nhập")}<br/>
+          <strong>Danh hiệu đạt được:</strong> ${escapeHtml(GAME_DATA.awardTitle)}
+        </div>
+        <div class="res-section">
+          <strong>1. Truy tìm thủ phạm (Những nguyên nhân làm bẩn dòng sông):</strong><br/>
+          ${state.ideas.length ? state.ideas.map((t, idx) => `${idx + 1}. ${escapeHtml(t)}`).join("<br/>") : "(Chưa có dữ liệu)"}
+        </div>
+        <div class="res-section">
+          <strong>2. Giải mã dòng nước:</strong><br/>
+          - Đưa tranh về đúng ngôi nhà: Đúng <strong>${state.sortScore}/${GAME_DATA.sortCards.length}</strong> thẻ tranh.<br/>
+          - Mở hộp khóa tri thức: Đúng <strong>${state.quizScore}/${GAME_DATA.quizzes.length}</strong> câu hỏi.
+        </div>
+        <div class="res-section">
+          <strong>3. Em là người hùng:</strong>
+          <table class="res-table">
+            <thead>
+              <tr>
+                <th style="width:26%;">Câu chuyện</th>
+                <th style="width:38%;">Cách làm đội em chọn</th>
+                <th style="width:36%;">Lý do đội em giải thích</th>
+              </tr>
+            </thead>
+            <tbody>${storyRows}</tbody>
+          </table>
+        </div>
+        <div class="res-section">
+          <strong>4. Bức tranh cam kết:</strong><br/>
+          ${cornerLines}
+          <div style="margin-top:8px; padding:10px; background:#f0fdf4; border:2px solid #15803d; border-radius:6px;">
+            <strong>LỜI HỨA CHUNG CỦA CẢ ĐỘI:</strong> ${escapeHtml(state.teamPromise.trim() || "(Chưa nhập)")}
+          </div>
+        </div>
+      `;
+    }
+
+    /* -------------------------------------------------------------------------
+       12. XUẤT FILE WORD (.DOC CHUẨN ARIAL 12PT), SAO CHÉP & CHƠI LẠI
+       ------------------------------------------------------------------------- */
+    function downloadWordFile() {
+      try {
+        renderResultSheet();
+        const bodyContent = document.getElementById("result-sheet").innerHTML;
+        const docHtml = `
+          <html xmlns:o="urn:schemas-microsoft-com:office:office"
+                xmlns:w="urn:schemas-microsoft-com:office:word"
+                xmlns="http://www.w3.org/TR/REC-html40">
+          <head>
+            <meta charset="utf-8" />
+            <title>Phiếu Ghi Nhận Hành Trình Giải Cứu Dòng Sông Xanh</title>
+            <style>
+              body { font-family: Arial, Helvetica, sans-serif; font-size: 12pt; line-height: 1.5; color: #000000; }
+              h3 { text-align: center; font-size: 14pt; color: #0c4a6e; text-transform: uppercase; margin-bottom: 4pt; }
+              .res-section { margin-top: 10pt; padding-top: 8pt; border-top: 1px dashed #64748b; }
+              table { width: 100%; border-collapse: collapse; margin-top: 6pt; font-family: Arial, Helvetica, sans-serif; font-size: 12pt; }
+              th, td { border: 1px solid #334155; padding: 5pt 7pt; text-align: left; vertical-align: top; }
+              th { background: #f1f5f9; }
+            </style>
+          </head>
+          <body>${bodyContent}</body>
+          </html>
+        `;
+        const blob = new Blob(["\ufeff", docHtml], { type: "application/msword;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        const safeTeam = (state.teamName || "Doi_Cuu_Ho").replace(/[^a-zA-Z0-9\u00C0-\u024F\u1E00-\u1EFF_-]+/g, "_");
+        a.download = `Phieu_Hanh_Trinh_${safeTeam}.doc`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        showToast("📄 Đã tải file Word (.doc) chuẩn Arial 12pt!");
+      } catch (e) {
+        showToast("Không thể xuất file Word lúc này, hãy thử nút In / Lưu PDF nhé!");
+      }
+    }
+
+    function copyResultText() {
+      renderResultSheet();
+      const text = document.getElementById("result-sheet").innerText;
+      function fallbackCopy() {
+        let ok = false;
+        try {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.setAttribute("readonly", "");
+          ta.style.position = "fixed";
+          ta.style.left = "-9999px";
+          document.body.appendChild(ta);
+          ta.select();
+          ta.setSelectionRange(0, text.length);
+          ok = document.execCommand("copy");
+          document.body.removeChild(ta);
+        } catch (e) {}
+        showToast(ok ? "📋 Đã sao chép kết quả hành trình!" : "Không thể sao chép tự động, hãy bấm Tải file Word (.doc) nhé!");
+      }
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+          .then(() => showToast("📋 Đã sao chép kết quả hành trình!"))
+          .catch(() => fallbackCopy());
+      } else {
+        fallbackCopy();
+      }
+    }
+
+    function askRestartGame() {
+      openConfirm(
+        "Chơi lại từ đầu?",
+        "Toàn bộ kết quả của lượt chơi này sẽ được làm mới để đội tiếp theo tham gia.",
+        function () {
+          state = createEmptyState();
+          maxUnlocked = 0;
+          renderAllScreens();
+          goScreen(0);
+          showToast("⛵ Đã sẵn sàng cho lượt giải cứu mới!");
+        }
+      );
+    }
+
+    function renderAllScreens() {
+      renderScreen0();
+      renderScreen1();
+      renderScreen2();
+      renderScreen3();
+      renderScreen4();
+      renderScreen5();
+      renderRiverMap();
+    }
+
+    /* -------------------------------------------------------------------------
+       13. KHỞI CHẠY ỨNG DỤNG
+       ------------------------------------------------------------------------- */
+    window.onload = function () {
+      renderAllScreens();
+    };
+  </script>
+</body>
+</html>
